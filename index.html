@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#143d42" />
+    <title>星光伙伴 · 一颗属于你的魔法蛋</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="journey.css" />
+    <link rel="stylesheet" href="homework.css" />
+    <link rel="stylesheet" href="local.css" />
+    <link rel="stylesheet" href="play.css" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="assets/magic-egg.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="星光伙伴" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <link rel="preload" as="image" href="assets/pets-baby.png" />
+  </head>
+  <body>
+    <main id="world" class="journey">
+      <div class="scenery" aria-hidden="true"></div>
+      <div class="shade" aria-hidden="true"></div>
+      <div id="fireflies" aria-hidden="true"></div>
+      <div class="mist mist-one" aria-hidden="true"></div>
+      <div class="mist mist-two" aria-hidden="true"></div>
+      <header>
+        <a class="brand" href="./"
+          ><span class="brand-star">✧</span
+          ><span>星光伙伴<small>米多的魔法森林</small></span></a
+        >
+        <div class="settings">
+          <button
+            id="motion"
+            class="round"
+            aria-label="暂停动态"
+            title="暂停动态"
+          >
+            ✦</button
+          ><button
+            id="sound"
+            class="round"
+            aria-label="开启声音"
+            title="开启声音"
+          >
+            ♪<span class="sound-off"></span>
+          </button>
+        </div>
+      </header>
+      <nav class="forest-nav">
+        <button id="local-button" type="button">安装与存档</button
+        ><button id="gallery-button">伙伴图鉴</button
+        ><button id="games-button">今日游乐场</button
+        ><button id="music-button" aria-pressed="false">♫ 开启音乐</button>
+      </nav>
+      <section class="heading">
+        <div class="chapter" id="chapter">初见 · 森林的小来信</div>
+        <h1 id="title">你的魔法伙伴，<br />会是谁呢？</h1>
+        <p id="subtitle">回答四个小问题，让星光找到它。</p>
+      </section>
+      <section class="pet-stage" aria-label="魔法伙伴">
+        <div id="speech" class="speech" role="status">
+          先保密哦，见面那天再告诉你。
+        </div>
+        <div class="halo" aria-hidden="true"></div>
+        <button id="pet" aria-label="轻轻碰一碰魔法蛋" class="pet">
+          <span class="sprite egg-art" id="main-sprite"></span>
+        </button>
+        <div class="ground-glow" aria-hidden="true"></div>
+        <div id="effects" aria-hidden="true"></div>
+        <span class="touch-hint" id="touch-hint">✧ 一个还没有揭晓的小秘密</span>
+      </section>
+      <section
+        id="content"
+        class="bottom-panel"
+        aria-label="魔法旅程"
+      ></section>
+      <p id="storage-notice" role="status" class="storage-notice hidden">
+        这个浏览器暂时无法保存进度，请先不要关闭页面。
+      </p>
+      <footer>
+        <span>✧ 每一天，一起长大</span
+        ><button id="parent" class="text-button">家长查看</button>
+      </footer>
+    </main>
+    <dialog id="naming">
+      <form id="name-form">
+        <button type="button" class="close" aria-label="稍后取名">×</button
+        ><span class="dialog-eyebrow">终于见到你啦</span>
+        <div class="mini-pet sprite"></div>
+        <h2>给小伙伴取个名字吧</h2>
+        <p id="name-intro">以后，它就知道你在叫它啦。</p>
+        <label for="pet-name">小伙伴的名字</label
+        ><input
+          id="pet-name"
+          maxlength="12"
+          autocomplete="off"
+          required
+          placeholder="输入你喜欢的名字"
+          aria-describedby="name-error"
+        />
+        <div id="name-error" role="status"></div>
+        <div class="suggestions"></div>
+        <button class="primary" type="submit">
+          记住我们的名字 <span>♡</span>
+        </button>
+      </form>
+    </dialog>
+    <dialog id="lesson-dialog" aria-label="今日魔法小任务">
+      <button class="close" aria-label="稍后继续">×</button>
+      <section id="lesson-content"></section>
+    </dialog>
+    <dialog id="homework-dialog" aria-label="今天的小约定">
+      <button class="close" aria-label="关闭">×</button>
+      <section id="homework-content"></section>
+    </dialog>
+    <dialog id="submission-dialog" aria-label="提交完成记录">
+      <button class="close" aria-label="关闭">×</button>
+      <form id="submission-form">
+        <span class="dialog-eyebrow">把努力装进一张照片</span>
+        <h2 id="submission-title"></h2>
+        <p>做完这项作业，拍一张照片。让星光为今天的努力盖个章。</p>
+        <label for="submission-note">我完成了什么（选填）</label
+        ><textarea
+          id="submission-note"
+          maxlength="240"
+          rows="3"
+          placeholder="例如：练习做完啦，有一道题想请你帮忙看看"
+        ></textarea>
+        <label for="submission-minutes">用时多少分钟（选填）</label
+        ><input
+          id="submission-minutes"
+          type="number"
+          min="0"
+          max="600"
+          step="1"
+          inputmode="numeric"
+          placeholder="例如 15"
+        />
+        <label for="submission-photo"
+          >拍一张这项作业的照片（必填，最多5MB）</label
+        ><input
+          id="submission-photo"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          capture="environment"
+          required
+        />
+        <p id="photo-file-name" class="quiz-note">
+          每一项作业，都留下一张努力的照片。
+        </p>
+        <img
+          id="photo-preview"
+          class="homework-photo hidden"
+          alt="本次作业照片预览"
+        />
+        <p id="submission-error" class="form-message" role="status"></p>
+        <button id="submit-homework" class="primary" type="submit">
+          上传照片，开始星光审核 ✧
+        </button>
+        <p class="quiz-note">
+          <span data-photo-storage
+            >当前为体验审核，仅播放仪式动画，不判断作业内容。照片仅用于当次仪式，不上传、不留存。</span
+          >
+        </p>
+      </form>
+    </dialog>
+    <dialog id="ritual-dialog" aria-label="照片打卡仪式" data-step="0">
+      <span class="ritual-badge">✧ 体验审核 · 真实审核尚未开放</span>
+      <div class="ritual-orbit" aria-hidden="true">
+        <i class="orbit-star star-one">✧</i><i class="orbit-star star-two">✦</i
+        ><i class="orbit-star star-three">✧</i>
+        <div class="ritual-envelope">
+          <img id="ritual-photo" alt="正在打卡的作业照片" /><span
+            class="ritual-stamp"
+            >✓</span
+          >
+        </div>
+        <span class="ritual-ring"></span>
+      </div>
+      <h2 id="ritual-title"></h2>
+      <p id="ritual-description" role="status" aria-live="polite"></p>
+      <ol class="ritual-steps">
+        <li data-ritual-step="0"><b>1</b>上传照片<small>临时展示</small></li>
+        <li data-ritual-step="1"><b>2</b>照片审核<small>星光仪式</small></li>
+        <li data-ritual-step="2"><b>✓</b>审核通过<small>收下礼物</small></li>
+      </ol>
+      <div id="ritual-reward" role="status"></div>
+      <button id="ritual-claim" class="primary hidden">收下这份小礼物 ♡</button
+      ><button id="ritual-error" class="text-button hidden">
+        返回，重新选择照片
+      </button>
+      <p class="quiz-note">这是一场庆祝仪式，暂不检查答案对错。</p>
+    </dialog>
+    <dialog id="pin-dialog" aria-label="家长PIN">
+      <button class="close" aria-label="关闭">×</button>
+      <form id="pin-form">
+        <span class="dialog-eyebrow">🔑 家长专属</span>
+        <h2 id="pin-title"></h2>
+        <p id="pin-copy"></p>
+        <label for="parent-pin">6位数字PIN</label
+        ><input
+          id="parent-pin"
+          type="password"
+          inputmode="numeric"
+          pattern="[0-9]{6}"
+          maxlength="6"
+          autocomplete="off"
+          required
+        /><label id="pin-confirm-label"
+          >再输入一次<input
+            id="parent-pin-confirm"
+            type="password"
+            inputmode="numeric"
+            pattern="[0-9]{6}"
+            maxlength="6"
+            autocomplete="off"
+        /></label>
+        <p id="pin-error" class="form-message" role="status"></p>
+        <button id="unlock-parent" class="primary">进入家长小书桌</button>
+        <p class="quiz-note">
+          请家长亲自操作。PIN用于本机防误操作；离开家长页会重新锁定。
+        </p>
+      </form>
+    </dialog>
+    <dialog id="workshop-dialog" aria-label="家长小书桌">
+      <button class="close" aria-label="关闭并锁定">×</button>
+      <section id="workshop-content"></section>
+    </dialog>
+    <dialog id="backpack-dialog" aria-label="奖励背包">
+      <button class="close" aria-label="关闭">×</button>
+      <section id="backpack-content"></section>
+    </dialog>
+    <dialog id="memory">
+      <button class="close" aria-label="关闭">×</button>
+      <div class="certificate">
+        <span class="dialog-eyebrow">星 光 森 林 · 初 见 纪 念</span>
+        <div class="mini-pet sprite"></div>
+        <h2 id="certificate-name"></h2>
+        <p>是你的选择，让我们遇见了彼此。</p>
+        <div class="certificate-rule"></div>
+        <span id="certificate-species"></span>
+        <p id="certificate-date"></p>
+        <small>从一颗小小的蛋，一起慢慢长大。</small
+        ><button class="primary" id="close-certificate">
+          回到我们的小窝 <span>♡</span>
+        </button>
+      </div>
+    </dialog>
+    <dialog id="parent-dialog" aria-label="家长查看">
+      <button class="close" aria-label="关闭">×</button
+      ><span class="dialog-eyebrow">成长约定</span>
+      <h2>慢慢长大，每天相伴</h2>
+      <p>
+        首日约定全部拍照打卡后孵化。当前体验审核自动通过，不检查作业内容。每天完成全部约定，记一个成长日；每项只奖励一次，英语小角落不参与打卡。
+      </p>
+      <div class="growth-list" id="growth-list"></div>
+      <p class="parent-note">
+        按北京时间记录。漏一天不倒退，也不清零。问卷只用于趣味匹配，不给孩子贴性格标签。
+      </p>
+      <div id="growth-preview" class="hidden">
+        <h3>看看它将来长大的样子</h3>
+        <p>仅在这里预览，不改变孩子的成长记录。</p>
+        <div class="preview-pet">
+          <span class="sprite" id="preview-sprite"></span>
+        </div>
+        <div
+          class="preview-buttons"
+          role="group"
+          aria-label="预览成长阶段"
+        ></div>
+        <p id="preview-label" role="status"></p>
+      </div>
+      <section class="vocabulary-panel">
+        <span class="dialog-eyebrow">把小小的单词，装进口袋</span>
+        <h3>我的离线词库 · <span id="vocabulary-count">120</span> 词</h3>
+        <p>
+          内置120个基础词，可在英语小角落自由学习。固定美式英语语音，点一下就能听；语音为统一音色合成。
+        </p>
+        <p id="offline-status" class="parent-note" role="status">
+          正在检查离线资源…
+        </p>
+        <button class="text-button" id="prepare-offline">
+          ↻ 重新准备离线资源
+        </button>
+        <p class="parent-note">
+          首次准备需要联网。显示“离线资源已就绪”后，可断网刷新和学习。清理浏览器数据会移除进度和下载内容。
+        </p>
+        <button class="primary" id="update-vocabulary">
+          检查并下载新词包 <span>↓</span>
+        </button>
+        <p id="vocabulary-status" class="parent-note" role="status">
+          可下载「森林新朋友」24 词，包含全部配套语音。
+        </p>
+        <details>
+          <summary>打开单词口袋 · 点击试听</summary>
+          <div id="vocabulary-list"></div>
+        </details>
+      </section>
+    </dialog>
+    <div class="hatch-overlay hidden" id="hatch-overlay" aria-live="polite">
+      <span>听，蛋壳里有小小的心跳……</span>
+    </div>
+    <dialog id="local-dialog" aria-labelledby="local-title">
+      <button id="local-close" class="close" aria-label="关闭">×</button>
+      <span class="dialog-eyebrow">我的口袋森林 · 单机版</span>
+      <h2 id="local-title">把小伙伴带在身边</h2>
+      <p>
+        在 Safari
+        中打开，点“分享”→“添加到主屏幕”。添加后，请从主屏幕图标打开，再到家长页准备离线资源。
+      </p>
+      <p>
+        看到“离线资源已就绪”后，开启飞行模式试玩一次。iPhone 和 iPad
+        各自保存，不需要登录。
+      </p>
+      <p>
+        照片只用于当次仪式，不上传、不留存。系统相机是否另存相册由设备决定。清理网站数据可能删除进度，建议定期备份。
+      </p>
+      <button class="primary" id="export-save">导出存档到“文件”</button>
+      <section id="backup-fallback" hidden>
+        <p>如果无法分享或下载，可以复制完整存档保存到备忘录。请勿改动存档内容。</p>
+        <textarea id="backup-text" readonly aria-label="完整备份存档" rows="5"></textarea>
+        <button class="text-button" id="download-backup">下载存档文件</button>
+        <button class="text-button" id="copy-backup">复制完整存档</button>
+      </section>
+      <details><summary>从备忘录粘贴存档恢复</summary>
+        <textarea id="restore-input" aria-label="粘贴完整存档" rows="5" placeholder="粘贴完整存档内容"></textarea>
+        <button class="text-button" id="restore-text">检查并恢复存档</button>
+      </details>
+      <label class="import-label"
+        >从“文件”恢复存档<input
+          id="import-save"
+          type="file"
+          accept=".json,application/json"
+      /></label>
+      <button class="text-button" id="request-persistence">
+        申请保护本机存档
+      </button>
+      <p id="local-status" role="status"></p>
+    </dialog>
+    <dialog id="gallery-dialog">
+      <button class="close" aria-label="关闭">×</button>
+      <section id="gallery-content"></section>
+    </dialog>
+    <dialog id="games-dialog">
+      <button class="close" aria-label="关闭">×</button>
+      <section id="games-content"></section>
+    </dialog>
+    <script src="core-vocabulary.js"></script>
+    <script src="vocabulary.js"></script>
+    <script src="model.js"></script>
+    <script src="homework-model.js"></script>
+    <script src="collection.js"></script>
+    <script src="local-game.js"></script>
+    <script src="parent-lock.js"></script>
+    <script src="app.js"></script>
+    <script src="homework.js"></script>
+    <script src="offline.js"></script>
+    <script src="play.js"></script>
+    <script src="music.js"></script>
+  </body>
+</html>

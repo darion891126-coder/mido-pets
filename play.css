@@ -1,0 +1,170 @@
+.forest-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 12px;
+  position: relative;
+  z-index: 3;
+}
+.forest-nav button,
+#local-button {
+  margin: 0;
+  padding: 8px 12px;
+  background: #123a3edf;
+  color: #f6e7c7;
+  border: 1px solid #e9d59866;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+#gallery-dialog {
+  width: min(740px, calc(100% - 24px));
+}
+.gallery-tabs {
+  display: flex;
+  overflow: auto;
+  gap: 8px;
+  margin: 20px 0;
+}
+.gallery-tabs button {
+  flex-shrink: 0;
+  padding: 10px;
+  border-radius: 16px;
+  background: #e0ece7;
+  border: 1px solid #aac8ba;
+  color: #214c47;
+}
+.gallery-tabs button[aria-pressed="true"] {
+  background: #245b51;
+  color: #fff;
+}
+.species-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.species-grid article {
+  border-radius: 22px;
+  background: #e6eee8;
+  text-align: center;
+  padding: 8px;
+}
+.species-grid h3 {
+  font-size: 16px;
+}
+.species-grid p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.gallery-art {
+  display: block;
+  width: 160px;
+  height: 160px;
+  max-width: 100%;
+  margin: auto;
+  background-size: 300% 200%;
+  background-repeat: no-repeat;
+  border-radius: 24px;
+}
+.owned-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 18px 0;
+}
+.owned-list button {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #9db9ad;
+  background: #eef4eb;
+  color: #214c47;
+}
+.owned-list button:disabled {
+  opacity: 0.6;
+}
+#another-pet:disabled,
+.game-menu button:disabled {
+  opacity: 0.5;
+}
+.game-menu {
+  display: grid;
+  gap: 16px;
+  margin: 24px 0;
+}
+.race-track {
+  height: 130px;
+  position: relative;
+  background: #d9ebc6;
+  border-radius: 24px;
+  margin: 24px 0;
+  overflow: hidden;
+}
+#race-runner {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transition: left 0.25s;
+  width: 90px;
+}
+#race-runner .gallery-art {
+  width: 90px;
+  height: 100px;
+}
+.race-finish {
+  position: absolute;
+  right: 5px;
+  top: 12px;
+  font-size: 30px;
+}
+.hiding-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.hiding-grid button {
+  height: 88px;
+  background: #dbeccf;
+  border: 0;
+  border-radius: 18px;
+  font-size: 40px;
+}
+.hiding-grid .gallery-art {
+  width: 76px;
+  height: 76px;
+}
+.disc-track {
+  height: 66px;
+  position: relative;
+  background: #cbe2d7;
+  border-radius: 25px;
+  margin: 20px 0;
+  overflow: hidden;
+}
+.catch-zone {
+  position: absolute;
+  left: 28%;
+  width: 44%;
+  height: 100%;
+  background: #fae6a5;
+}
+#flying-disc {
+  position: absolute;
+  top: 12px;
+  font-size: 30px;
+}
+#game-note {
+  min-height: 55px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+@media (min-width: 600px) {
+  .species-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #race-runner {
+    transition: none;
+  }
+}

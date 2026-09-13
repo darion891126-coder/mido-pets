@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "星光伙伴 · 米多的魔法森林",
+  "short_name": "星光伙伴",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#143d42",
+  "theme_color": "#143d42",
+  "icons": [
+    {
+      "src": "assets/magic-egg.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
