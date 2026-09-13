@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "packs": [
+    {
+      "id": "forest-friends",
+      "version": 1,
+      "title": "森林新朋友",
+      "url": "wordpacks/forest-friends-v1.json",
+      "count": 24
+    }
+  ]
+}

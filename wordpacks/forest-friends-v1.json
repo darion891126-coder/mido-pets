@@ -1,0 +1,201 @@
+{
+  "id": "forest-friends",
+  "version": 1,
+  "title": "森林新朋友",
+  "accent": "en-US",
+  "voice": "en-US-AriaNeural",
+  "words": [
+    {
+      "id": "fox",
+      "word": "fox",
+      "chinese": "狐狸",
+      "icon": "🦊",
+      "theme": "动物",
+      "audio": "audio/fox.mp3"
+    },
+    {
+      "id": "unicorn",
+      "word": "unicorn",
+      "chinese": "独角兽",
+      "icon": "🦄",
+      "theme": "动物",
+      "audio": "audio/unicorn.mp3"
+    },
+    {
+      "id": "dragon",
+      "word": "dragon",
+      "chinese": "龙",
+      "icon": "🐲",
+      "theme": "动物",
+      "audio": "audio/dragon.mp3"
+    },
+    {
+      "id": "panda",
+      "word": "panda",
+      "chinese": "熊猫",
+      "icon": "🐼",
+      "theme": "动物",
+      "audio": "audio/panda.mp3"
+    },
+    {
+      "id": "koala",
+      "word": "koala",
+      "chinese": "考拉",
+      "icon": "🐨",
+      "theme": "动物",
+      "audio": "audio/koala.mp3"
+    },
+    {
+      "id": "penguin",
+      "word": "penguin",
+      "chinese": "企鹅",
+      "icon": "🐧",
+      "theme": "动物",
+      "audio": "audio/penguin.mp3"
+    },
+    {
+      "id": "whale",
+      "word": "whale",
+      "chinese": "鲸",
+      "icon": "🐳",
+      "theme": "动物",
+      "audio": "audio/whale.mp3"
+    },
+    {
+      "id": "dolphin",
+      "word": "dolphin",
+      "chinese": "海豚",
+      "icon": "🐬",
+      "theme": "动物",
+      "audio": "audio/dolphin.mp3"
+    },
+    {
+      "id": "octopus",
+      "word": "octopus",
+      "chinese": "章鱼",
+      "icon": "🐙",
+      "theme": "动物",
+      "audio": "audio/octopus.mp3"
+    },
+    {
+      "id": "snail",
+      "word": "snail",
+      "chinese": "蜗牛",
+      "icon": "🐌",
+      "theme": "动物",
+      "audio": "audio/snail.mp3"
+    },
+    {
+      "id": "ant",
+      "word": "ant",
+      "chinese": "蚂蚁",
+      "icon": "🐜",
+      "theme": "动物",
+      "audio": "audio/ant.mp3"
+    },
+    {
+      "id": "spider",
+      "word": "spider",
+      "chinese": "蜘蛛",
+      "icon": "🕷️",
+      "theme": "动物",
+      "audio": "audio/spider.mp3"
+    },
+    {
+      "id": "broccoli",
+      "word": "broccoli",
+      "chinese": "西兰花",
+      "icon": "🥦",
+      "theme": "食物",
+      "audio": "audio/broccoli.mp3"
+    },
+    {
+      "id": "onion",
+      "word": "onion",
+      "chinese": "洋葱",
+      "icon": "🧅",
+      "theme": "食物",
+      "audio": "audio/onion.mp3"
+    },
+    {
+      "id": "mushroom",
+      "word": "mushroom",
+      "chinese": "蘑菇",
+      "icon": "🍄",
+      "theme": "食物",
+      "audio": "audio/mushroom.mp3"
+    },
+    {
+      "id": "violin",
+      "word": "violin",
+      "chinese": "小提琴",
+      "icon": "🎻",
+      "theme": "音乐",
+      "audio": "audio/violin.mp3"
+    },
+    {
+      "id": "guitar",
+      "word": "guitar",
+      "chinese": "吉他",
+      "icon": "🎸",
+      "theme": "音乐",
+      "audio": "audio/guitar.mp3"
+    },
+    {
+      "id": "drum",
+      "word": "drum",
+      "chinese": "鼓",
+      "icon": "🥁",
+      "theme": "音乐",
+      "audio": "audio/drum.mp3"
+    },
+    {
+      "id": "rocket",
+      "word": "rocket",
+      "chinese": "火箭",
+      "icon": "🚀",
+      "theme": "交通",
+      "audio": "audio/rocket.mp3"
+    },
+    {
+      "id": "helicopter",
+      "word": "helicopter",
+      "chinese": "直升机",
+      "icon": "🚁",
+      "theme": "交通",
+      "audio": "audio/helicopter.mp3"
+    },
+    {
+      "id": "truck",
+      "word": "truck",
+      "chinese": "卡车",
+      "icon": "🚚",
+      "theme": "交通",
+      "audio": "audio/truck.mp3"
+    },
+    {
+      "id": "ten",
+      "word": "ten",
+      "chinese": "十",
+      "icon": "🔟",
+      "theme": "数字",
+      "audio": "audio/ten.mp3"
+    },
+    {
+      "id": "black",
+      "word": "black",
+      "chinese": "黑色",
+      "icon": "⚫",
+      "theme": "颜色",
+      "audio": "audio/black.mp3"
+    },
+    {
+      "id": "brown",
+      "word": "brown",
+      "chinese": "棕色",
+      "icon": "🟤",
+      "theme": "颜色",
+      "audio": "audio/brown.mp3"
+    }
+  ]
+}
