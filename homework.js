@@ -80,7 +80,7 @@ function renderHomework() {
     d = H.day(state, date),
     count = d.tasks.filter((t) => t.status === "approved").length;
   $("#homework-content").innerHTML =
-    `<span class="dialog-eyebrow">${date} · 我与小伙伴的约定</span><h2>今天的小约定</h2><p>做完自己的作业，带一份礼物回家。</p><div class="promise-path"><span>📷 上传照片</span><i>→</i><span>✧ 体验审核</span><i>→</i><span>🎁 收到礼物</span></div><p class="ritual-disclosure">体验审核只是一场庆祝仪式，暂不检查作业内容。</p><div class="promise-count">${d.tasks.length ? `已打卡 ${count} / ${d.tasks.length} 项` : "今天还没有写下约定"}<span>${d.credited ? "✦ 今日成长已记下" : ""}</span></div><div class="promise-list">${d.tasks.map((t) => `<article class="promise-card ${t.status}"><div class="promise-heading"><span class="promise-icon">${H.kinds[t.kind].icon}</span><div><h3>${safe(t.title)}</h3><small>${statusText(t.status)}</small></div></div><p class="promise-reward">${rewardText(t)}</p>${t.feedback ? `<p class="parent-feedback">家长的小提醒：${safe(t.feedback)}</p>` : ""}${["todo", "returned", "submitted"].includes(t.status) ? `<button class="primary" data-submit="${t.id}">${t.status === "returned" ? "检查好啦，重新提交" : "拍张照片，完成打卡"}</button>` : `<p class="promise-status">${t.status === "submitted" ? "已经送出，等家长看看你的努力。" : "✓ 礼物已经放进背包啦。"}</p>`}</article>`).join("")}</div>${!d.tasks.length ? '<div class="empty-promise"><span>📜</span><p>请家长写下真实的作业，<br>比如“数学练习第12页”或“读书15分钟”。</p></div>' : ""}<button id="homework-parent" class="text-button">🔑 请家长来安排作业</button><p class="quiz-note">${state.phase === "egg" ? "今天所有作业照片打卡后，魔法蛋就会孵化。" : "每天全部照片打卡，记一个成长日。漏一天也不倒退。"}</p>`;
+    `<span class="dialog-eyebrow">${date} · 我与小伙伴的约定</span><h2>今天的小约定</h2><p>做完自己的作业，带一份礼物回家。</p><div class="promise-path"><span>✧ 完成打卡</span><i>→</i><span>✧ 体验审核</span><i>→</i><span>🎁 收到礼物</span></div><p class="ritual-disclosure">体验审核只是一场庆祝仪式，暂不检查作业内容。</p><div class="promise-count">${d.tasks.length ? `已打卡 ${count} / ${d.tasks.length} 项` : "今天还没有写下约定"}<span>${d.credited ? "✦ 今日成长已记下" : ""}</span></div><div class="promise-list">${d.tasks.map((t) => `<article class="promise-card ${t.status}"><div class="promise-heading"><span class="promise-icon">${H.kinds[t.kind].icon}</span><div><h3>${safe(t.title)}</h3><small>${statusText(t.status)}</small></div></div><p class="promise-reward">${rewardText(t)}</p>${t.feedback ? `<p class="parent-feedback">家长的小提醒：${safe(t.feedback)}</p>` : ""}${["todo", "returned", "submitted"].includes(t.status) ? `<button class="primary" data-submit="${t.id}">${t.status === "returned" ? "检查好啦，重新提交" : t.kind === "writing" ? "拍张照片，完成打卡" : "完成啦，打卡领礼物"}</button>` : `<p class="promise-status">${t.status === "submitted" ? "已经送出，等家长看看你的努力。" : "✓ 礼物已经放进背包啦。"}</p>`}</article>`).join("")}</div>${!d.tasks.length ? '<div class="empty-promise"><span>📜</span><p>请家长写下真实的作业，<br>比如“数学练习第12页”或“读书15分钟”。</p></div>' : ""}<button id="homework-parent" class="text-button">🔑 请家长来安排作业</button><p class="quiz-note">${state.phase === "egg" ? "今天所有约定打卡后，魔法蛋就会孵化。" : "每天全部约定打卡，记一个成长日。漏一天也不倒退。"}</p>`;
   document
     .querySelectorAll("[data-submit]")
     .forEach((b) => (b.onclick = () => openSubmission(date, b.dataset.submit)));
@@ -91,15 +91,25 @@ function renderHomework() {
 }
 function openSubmission(date, id) {
   const task = H.day(state, date).tasks.find((t) => t.id === id);
-  selectedSubmission = { date, id, photo: task.photo };
+  selectedSubmission = {
+    date,
+    id,
+    photo: task.photo,
+    needsPhoto: task.kind === "writing",
+  };
   $("#submission-title").textContent = task.title;
   $("#submission-note").value = task.note;
   $("#submission-minutes").value = task.minutes || "";
   $("#submission-photo").value = "";
   $("#submission-error").textContent = "";
-  $("#submission-photo").required = true;
+  $("#submission-photo").required = selectedSubmission.needsPhoto;
+  $("#submission-photo-fields").hidden = !selectedSubmission.needsPhoto;
+  $("#submit-homework").textContent = selectedSubmission.needsPhoto
+    ? "上传照片，开始星光审核 ✧"
+    : "完成啦，领取星光礼物 ✧";
   $("#photo-preview").classList.add("hidden");
-  $("#photo-file-name").textContent = "每一项作业，都留下一张努力的照片。";
+  $("#photo-file-name").textContent =
+    "书面作业留下一张努力的照片，其他任务无需拍照。";
   $("#submission-dialog").showModal();
 }
 function ritualStep(step) {
@@ -114,8 +124,18 @@ function ritualStep(step) {
     "这份小礼物，送给认真完成约定的你。",
   ];
   $("#ritual-dialog").dataset.step = String(step);
-  $("#ritual-title").textContent = titles[step];
-  $("#ritual-description").textContent = lines[step];
+  $("#ritual-title").textContent =
+    step === 0 && !selectedSubmission?.needsPhoto
+      ? "小约定正在送往星光小屋"
+      : titles[step];
+  $("#ritual-description").textContent =
+    step === 0 && !selectedSubmission?.needsPhoto
+      ? "记下今天的努力，准备你的礼物…"
+      : lines[step];
+  document.querySelector('[data-ritual-step="0"]').innerHTML =
+    selectedSubmission?.needsPhoto
+      ? "<b>1</b>上传照片<small>临时展示</small>"
+      : "<b>1</b>完成约定<small>记录努力</small>";
   document.querySelectorAll("[data-ritual-step]").forEach((el, i) => {
     el.classList.toggle("active", i === step);
     el.classList.toggle("complete", i < step);
@@ -136,7 +156,8 @@ $("#submission-photo").onchange = () => {
   ritualPreviewUrl = null;
   $("#photo-preview").classList.add("hidden");
   if (!file) {
-    $("#photo-file-name").textContent = "每一项作业，都留下一张努力的照片。";
+    $("#photo-file-name").textContent =
+      "书面作业留下一张努力的照片，其他任务无需拍照。";
     return;
   }
   if (
@@ -157,7 +178,7 @@ $("#submission-form").onsubmit = async (e) => {
   e.preventDefault();
   if (ritualBusy) return;
   const file = $("#submission-photo").files[0];
-  if (!file) {
+  if (selectedSubmission.needsPhoto && !file) {
     $("#submission-error").textContent =
       "先拍一张这项作业的照片，再开始打卡吧。";
     return;
@@ -178,18 +199,22 @@ $("#submission-form").onsubmit = async (e) => {
   $("#ritual-claim").classList.add("hidden");
   $("#ritual-error").classList.add("hidden");
   $("#ritual-reward").textContent = "";
-  if (!ritualPreviewUrl) ritualPreviewUrl = URL.createObjectURL(file);
-  $("#ritual-photo").src = ritualPreviewUrl;
+  if (file && !ritualPreviewUrl) ritualPreviewUrl = URL.createObjectURL(file);
+  $("#ritual-photo").hidden = !file;
+  if (file) $("#ritual-photo").src = ritualPreviewUrl;
   ritualStep(0);
   $("#ritual-dialog").showModal();
   try {
-    const [photo] = await Promise.all([storePhoto(file), ritualDelay()]);
+    const [photo] = await Promise.all([
+      file ? storePhoto(file) : Promise.resolve(null),
+      ritualDelay(),
+    ]);
     ritualStep(1);
     await ritualDelay();
     const before = M.growth(state.completedDates.length).index;
     const result = await changeHomework((s) => {
       if (submission.date !== M.chinaDate())
-        throw new Error("日期已经变化，请回到今天的约定重新拍照打卡。");
+        throw new Error("日期已经变化，请回到今天的约定重新打卡。");
       return H.completeRitual(s, submission.date, submission.id, {
         ...evidence,
         photo,
@@ -206,7 +231,7 @@ $("#submission-form").onsubmit = async (e) => {
     $("#ritual-claim").classList.remove("hidden");
     tone("adopt");
   } catch (error) {
-    $("#ritual-title").textContent = "照片还没有送达";
+    $("#ritual-title").textContent = "打卡还没有完成";
     $("#ritual-description").textContent = error.message;
     $("#ritual-error").classList.remove("hidden");
   } finally {
@@ -279,23 +304,29 @@ $("#pin-form").onsubmit = async (e) => {
     button.disabled = false;
   }
 };
+let planningOffset = 0;
 function renderParentWorkshop() {
   closePhotos();
-  const date = M.chinaDate(),
+  const today = M.chinaDate();
+  const date = new Date(
+      Date.parse(today + "T00:00:00Z") + planningOffset * 86400000,
+    )
+      .toISOString()
+      .slice(0, 10),
     d = H.day(state, date),
     h = H.ensure(state);
   const locked = d.credited || d.tasks.some((t) => t.status !== "todo");
   $("#workshop-content").innerHTML =
-    `<span class="dialog-eyebrow">家长的小书桌</span><h2>把今天的努力，看在眼里</h2><p>当前为照片打卡体验：拍照后播放仪式动画并自动发奖，不判断作业内容；真实审核后续再开放。</p><div class="parent-tabs"><button class="text-button" id="parent-info">成长规则与离线词库</button><button class="text-button" id="lock-parent">🔒 锁定并交给孩子</button></div><p id="workshop-note" class="parent-note" role="status"></p><h3>以往待确认的记录</h3><div id="review-list"></div><h3>安排今天 · ${date}</h3><div class="parent-tasks">${d.tasks.map((t) => `<div><span>${H.kinds[t.kind].icon} ${safe(t.title)}<small>${statusText(t.status)} · ${rewardText(t)}</small></span>${!locked ? `<button class="text-button" data-remove-task="${t.id}" aria-label="移除${safe(t.title)}">移除</button>` : ""}</div>`).join("") || "<p>从孩子今天真正要完成的事情开始。</p>"}</div>${
+    `<span class="dialog-eyebrow">家长的小书桌</span><h2>把今天的努力，看在眼里</h2><p>仅书面作业需要拍照，其他任务直接打卡；完成后播放仪式动画并自动发奖，不判断作业内容；真实审核后续再开放。</p><div class="parent-tabs"><button class="text-button" id="parent-info">成长规则与离线词库</button><button class="text-button" id="lock-parent">🔒 锁定并交给孩子</button></div><p id="workshop-note" class="parent-note" role="status"></p><h3>以往待确认的记录</h3><div id="review-list"></div><label>安排日期<select id="planning-day"><option value="0" ${planningOffset === 0 ? "selected" : ""}>今天</option><option value="1" ${planningOffset === 1 ? "selected" : ""}>明天</option></select></label><h3>安排${planningOffset ? "明天" : "今天"} · ${date}</h3><div class="parent-tasks">${d.tasks.map((t) => `<div><span>${H.kinds[t.kind].icon} ${safe(t.title)}<small>${statusText(t.status)} · ${rewardText(t)}</small></span>${!locked ? `<button class="text-button" data-remove-task="${t.id}" aria-label="移除${safe(t.title)}">移除</button>` : ""}</div>`).join("") || "<p>从孩子今天真正要完成的事情开始。</p>"}</div>${
       locked
-        ? '<p class="parent-note">今天已有提交，任务清单已锁定。需要调整的任务可退回后重新提交；新的安排明天再添加。</p>'
+        ? '<p class="parent-note">所选日期已有提交，清单已锁定。可以切换到明天提前安排。</p>'
         : `<form id="add-homework-form"><label for="homework-title">作业或约定</label><input id="homework-title" maxlength="60" required placeholder="例如：数学练习第12页"><div class="homework-form-row"><label>任务类型<select id="homework-kind">${Object.entries(
             H.kinds,
           )
             .map(([key, k]) => `<option value="${key}">${k.name}</option>`)
             .join(
               "",
-            )}</select></label><label>重复安排<select id="homework-repeat"><option value="once">仅今天</option><option value="daily">每天</option><option value="weekdays">每周一至周五</option></select></label></div><div class="homework-form-row"><label>完成奖励<select id="homework-reward"><option value="cookie">🍪 星星饼干 · 食物</option><option value="fruit">🍎 暖阳果果 · 食物</option><option value="toy">🧶 彩虹线球 · 互动玩具</option><option value="feather">🪶 星光羽毛 · 魔法道具</option></select></label><label>数量<select id="homework-amount"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></label></div><p id="new-task-reward" class="parent-note">照片打卡后获得：${rewardText("writing")}</p><button class="primary" type="submit">写进今天的小约定 ＋</button></form>`
+            )}</select></label><label>重复安排<select id="homework-repeat"><option value="once">仅所选日期</option><option value="daily">每天</option><option value="weekdays">每周一至周五</option></select></label></div><div class="homework-form-row"><label>完成奖励<select id="homework-reward"><option value="cookie">🍪 星星饼干 · 食物</option><option value="fruit">🍎 暖阳果果 · 食物</option><option value="toy">🧶 彩虹线球 · 互动玩具</option><option value="feather">🪶 星光羽毛 · 魔法道具</option></select></label><label>数量<select id="homework-amount"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></label></div><p id="new-task-reward" class="parent-note">完成打卡后获得：${rewardText("writing")}</p><button class="primary" type="submit">保存到所选日期 ＋</button></form>`
     }<h3>重复的小约定</h3><div class="parent-tasks">${
       h.repeats
         .filter((r) => r.active)
@@ -305,6 +336,10 @@ function renderParentWorkshop() {
         )
         .join("") || '<p class="parent-note">还没有重复安排。</p>'
     }</div><p class="parent-note">重复安排从下一天开始自动加入；停止重复不改变已经生成的任务。照片只用于当次仪式，不上传、不留存。当前体验审核不检查作业内容。</p>`;
+  $("#planning-day").onchange = (e) => {
+    planningOffset = Number(e.target.value);
+    renderParentWorkshop();
+  };
   const pending = Object.entries(h.days).flatMap(([date, d]) =>
     d.tasks.filter((t) => t.status === "submitted").map((t) => ({ date, t })),
   );
@@ -402,7 +437,7 @@ function renderParentWorkshop() {
   if (!locked) {
     const updateReward = () =>
       ($("#new-task-reward").textContent =
-        "照片打卡后获得：" +
+        "完成打卡后获得：" +
         rewardText({
           reward: {
             item: $("#homework-reward").value,
@@ -425,7 +460,7 @@ function renderParentWorkshop() {
         },
       };
       perform((s) => {
-        if (date !== M.chinaDate())
+        if (today !== M.chinaDate())
           throw new Error("日期已变化，请重新进入家长页面。");
         H.add(s, date, input);
       });
@@ -477,7 +512,7 @@ function renderBackpack() {
       )
       .join(
         "",
-      )}</div><p id="backpack-note" role="status">完成作业并拍照打卡，就能收集礼物。</p>`;
+      )}</div><p id="backpack-note" role="status">完成约定并打卡，就能收集礼物。</p>`;
   document.querySelectorAll("[data-use-item]").forEach(
     (b) =>
       (b.onclick = async () => {

@@ -347,14 +347,14 @@ function renderEgg() {
   heading(
     "相遇 · 一颗属于你的魔法蛋",
     "用今天的努力，唤醒它",
-    "完成自己的作业，拍照打卡，就能见面。",
+    "完成自己的约定，打卡后就能见面。",
   );
   say("咚、咚……我在等你的好消息。");
   $("#touch-hint").textContent = "♡ 轻轻碰一碰，蛋宝宝会回应";
   $("#content").innerHTML =
-    '<div class="egg-card"><span class="dialog-eyebrow">今天的小约定</span><h2>把努力，变成一份魔法</h2><div class="task-stars">✦ ♡ ✦</div><p>做完自己的作业，每一项拍一张照片。<br>完成星光审核仪式，收下食物和道具。</p><button class="primary" id="daily">' +
+    '<div class="egg-card"><span class="dialog-eyebrow">今天的小约定</span><h2>把努力，变成一份魔法</h2><div class="task-stars">✦ ♡ ✦</div><p>完成自己的约定，仅书面作业需要照片。<br>完成星光审核仪式，收下食物和道具。</p><button class="primary" id="daily">' +
     dailySummary() +
-    ' <span>↗</span></button><p class="quiz-note">首日约定全部照片打卡，小伙伴当天孵化。</p><div class="home-links"><button id="bag" class="text-button">🎒 我的奖励背包</button><button id="english" class="text-button">♪ 英语小角落 · 自由玩</button></div></div>';
+    ' <span>↗</span></button><p class="quiz-note">首日约定全部打卡，小伙伴当天孵化。</p><div class="home-links"><button id="bag" class="text-button">🎒 我的奖励背包</button><button id="english" class="text-button">♪ 英语小角落 · 自由玩</button></div></div>';
   bindDaily();
 }
 function bindDaily() {

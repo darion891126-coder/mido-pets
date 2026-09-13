@@ -40,6 +40,7 @@
           .filter(
             (r) =>
               r.active &&
+              (!r.startDate || date >= r.startDate) &&
               (r.repeat === "daily" || (weekday >= 1 && weekday <= 5)),
           )
           .map((r) => ({
@@ -91,7 +92,15 @@
       feedback: "",
     });
     if (repeat !== "once")
-      ensure(s).repeats.push({ id, title, kind, reward, repeat, active: true });
+      ensure(s).repeats.push({
+        id,
+        title,
+        kind,
+        reward,
+        repeat,
+        startDate: date,
+        active: true,
+      });
   }
   function remove(s, date, id) {
     const d = day(s, date);
@@ -104,8 +113,8 @@
     const t = day(s, date).tasks.find((t) => t.id === id);
     if (!t || !["todo", "returned", "submitted"].includes(t.status))
       throw new Error("这项任务已经提交过啦。");
-    if (typeof photo !== "string" || !photo.trim())
-      throw new Error("每项作业都要拍一张照片，才能开始打卡。");
+    if (t.kind === "writing" && (typeof photo !== "string" || !photo.trim()))
+      throw new Error("书面作业需要拍一张照片，才能开始打卡。");
     if (
       typeof note !== "string" ||
       note.length > 240 ||
@@ -135,7 +144,8 @@
       t.feedback = feedback.trim() || "再检查一下，完成后重新提交就好。";
       return { reward: null, grown: false, hatched: false };
     }
-    if (!t.photo) throw new Error("请先补充这项作业的照片。");
+    if (t.kind === "writing" && !t.photo)
+      throw new Error("请先补充这项作业的照片。");
     const reward = rewardFor(t),
       h = ensure(s);
     t.status = "approved";

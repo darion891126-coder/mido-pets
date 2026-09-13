@@ -143,23 +143,25 @@
           inputmode="numeric"
           placeholder="例如 15"
         />
-        <label for="submission-photo"
-          >拍一张这项作业的照片（必填，最多5MB）</label
-        ><input
-          id="submission-photo"
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          capture="environment"
-          required
-        />
-        <p id="photo-file-name" class="quiz-note">
-          每一项作业，都留下一张努力的照片。
-        </p>
-        <img
-          id="photo-preview"
-          class="homework-photo hidden"
-          alt="本次作业照片预览"
-        />
+        <div id="submission-photo-fields">
+          <label for="submission-photo"
+            >拍一张这项作业的照片（必填，最多5MB）</label
+          ><input
+            id="submission-photo"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            capture="environment"
+            required
+          />
+          <p id="photo-file-name" class="quiz-note">
+            每一项作业，都留下一张努力的照片。
+          </p>
+          <img
+            id="photo-preview"
+            class="homework-photo hidden"
+            alt="本次作业照片预览"
+          />
+        </div>
         <p id="submission-error" class="form-message" role="status"></p>
         <button id="submit-homework" class="primary" type="submit">
           上传照片，开始星光审核 ✧
@@ -258,7 +260,7 @@
       ><span class="dialog-eyebrow">成长约定</span>
       <h2>慢慢长大，每天相伴</h2>
       <p>
-        首日约定全部拍照打卡后孵化。当前体验审核自动通过，不检查作业内容。每天完成全部约定，记一个成长日；每项只奖励一次，英语小角落不参与打卡。
+        首日约定全部打卡后孵化。仅书面作业需要照片。当前体验审核自动通过，不检查作业内容。每天完成全部约定，记一个成长日；每项只奖励一次，英语小角落不参与打卡。
       </p>
       <div class="growth-list" id="growth-list"></div>
       <p class="parent-note">
@@ -324,13 +326,26 @@
       </p>
       <button class="primary" id="export-save">导出存档到“文件”</button>
       <section id="backup-fallback" hidden>
-        <p>如果无法分享或下载，可以复制完整存档保存到备忘录。请勿改动存档内容。</p>
-        <textarea id="backup-text" readonly aria-label="完整备份存档" rows="5"></textarea>
+        <p>
+          如果无法分享或下载，可以复制完整存档保存到备忘录。请勿改动存档内容。
+        </p>
+        <textarea
+          id="backup-text"
+          readonly
+          aria-label="完整备份存档"
+          rows="5"
+        ></textarea>
         <button class="text-button" id="download-backup">下载存档文件</button>
         <button class="text-button" id="copy-backup">复制完整存档</button>
       </section>
-      <details><summary>从备忘录粘贴存档恢复</summary>
-        <textarea id="restore-input" aria-label="粘贴完整存档" rows="5" placeholder="粘贴完整存档内容"></textarea>
+      <details>
+        <summary>从备忘录粘贴存档恢复</summary>
+        <textarea
+          id="restore-input"
+          aria-label="粘贴完整存档"
+          rows="5"
+          placeholder="粘贴完整存档内容"
+        ></textarea>
         <button class="text-button" id="restore-text">检查并恢复存档</button>
       </details>
       <label class="import-label"
