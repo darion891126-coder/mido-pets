@@ -242,3 +242,18 @@
   -webkit-mask-image: radial-gradient(ellipse, black 53%, transparent 73%);
   mask-image: radial-gradient(ellipse, black 53%, transparent 73%);
 }
+
+.pet.dozing.settling {
+  animation: nestle 0.9s ease-out both;
+}
+@keyframes nestle {
+  0% {
+    transform: translateY(-8px) scale(0.92, 0.96);
+  }
+  65% {
+    transform: translateY(5px) scale(1.025, 0.97);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}

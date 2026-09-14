@@ -13,8 +13,10 @@ const finalDetails = [
   "魔法飞毯 · 星空漫游",
   "太阳徽章 · 冒险披风",
 ];
-function portrait(species, index = 0) {
-  return `<span class="gallery-art" style="background-image:url('assets/${artSheets[index]}.png');background-position:${M.pets[species].pos}" role="img" aria-label="${safe(M.pets[species].species)}"></span>`;
+function portrait(species, index = 0, framed = false) {
+  const stage = ["baby", "toddler", "juvenile", "grown", "ultimate"][index];
+  const sheet = framed ? "pets-gallery-" + stage : artSheets[index];
+  return `<span class="gallery-art ${framed ? "gallery-framed" : ""}" data-species="${species}" data-stage="${index}" style="background-image:url('assets/${sheet}.png');background-position:${M.pets[species].pos}" role="img" aria-label="${safe(M.pets[species].species)}"></span>`;
 }
 function gallery() {
   const owned = [
@@ -27,7 +29,7 @@ function gallery() {
     $("#species-grid").innerHTML = M.pets
       .map(
         (pet, i) =>
-          `<article>${portrait(i, index)}<h3>${pet.species}</h3><p>${index === 4 ? finalDetails[i] : pet.trait}</p></article>`,
+          `<article>${portrait(i, index, true)}<h3>${pet.species}</h3><p>${index === 4 ? finalDetails[i] : pet.trait}</p></article>`,
       )
       .join("");
     document

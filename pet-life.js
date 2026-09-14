@@ -1,6 +1,6 @@
 /* Pet voices are original synthesized chirps, not animal recordings. */
 (function () {
-  let ctx, timer, sleepTimer, snoreTimer;
+  let ctx, timer, sleepTimer, snoreTimer, settleTimer;
   const voices = [
     [740, 1110, 1480, "sine"],
     [220, 390, 300, "triangle"],
@@ -80,9 +80,10 @@
     clearTimeout(timer);
     document.querySelectorAll(".pet-prop").forEach((e) => e.remove());
     clearTimeout(sleepTimer);
+    clearTimeout(settleTimer);
     clearInterval(snoreTimer);
     if (state.phase === "pet") sprite($("#main-sprite"));
-    $("#pet").classList.remove("dozing", "snuggle");
+    $("#pet").classList.remove("dozing", "snuggle", "settling");
     $(".sleep-breath")?.remove();
     $("#world").classList.remove("night");
     $("#pet").setAttribute("aria-label", "摸摸" + petName());
@@ -107,12 +108,16 @@
       burst("♡", 6);
       sleepTimer = setTimeout(
         () => {
-          $("#pet").className = "pet dozing";
+          $("#pet").className = "pet dozing settling";
+          settleTimer = setTimeout(
+            () => $("#pet").classList.remove("settling"),
+            reduced.matches ? 20 : 900,
+          );
           const stage = ["baby", "toddler", "juvenile", "grown", "ultimate"][
             M.growth(state.completedDates.length).index
           ];
           $("#main-sprite").style.backgroundImage =
-            'url("assets/pets-sleep-' + stage + '.png")';
+            'url("assets/pets-curled-' + stage + '.png")';
           $("#main-sprite").classList.add("sleep-art");
           const breath = document.createElement("span");
           breath.className = "sleep-breath";
@@ -125,7 +130,7 @@
             "aria-label",
             "正在睡觉的" + petName() + "，轻点唤醒",
           );
-          say("呼……睡着啦。轻轻点我，就会醒来。");
+          say("头枕着小爪子，蜷成暖暖的一团……呼噜噜。轻点可以唤醒。");
         },
         reduced.matches ? 50 : 2200,
       );
