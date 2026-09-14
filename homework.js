@@ -520,8 +520,11 @@ function renderBackpack() {
         try {
           const item = await changeHomework((s) => H.use(s, b.dataset.useItem));
           $("#backpack-dialog").close();
-          if (["cookie", "fruit"].includes(b.dataset.useItem)) interact("feed");
-          else interact("play");
+          if (window.PetLife) PetLife.act(b.dataset.useItem);
+          else
+            interact(
+              ["cookie", "fruit"].includes(b.dataset.useItem) ? "feed" : "play",
+            );
           burst(item.icon, 12);
           say(item.name + "收到了！谢谢你带来的小礼物。");
         } catch (error) {

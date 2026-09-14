@@ -1,0 +1,266 @@
+.scene-label {
+  text-align: center;
+  color: #ffeac0;
+  font-size: 12px;
+  letter-spacing: 2px;
+  margin: 10px;
+}
+#world[data-scene="0"] .scenery {
+  background-image: url("assets/scene-lake.svg");
+}
+#world[data-scene="1"] .scenery {
+  background-image: url("assets/scene-meadow.svg");
+}
+#world[data-scene="2"] .scenery {
+  background-image: url("assets/scene-hills.svg");
+}
+.pet.nibble {
+  animation: nibble 0.35s ease-in-out 5;
+}
+.pet.munch {
+  animation: munch 0.65s ease-in-out 3;
+}
+.pet.tumble {
+  animation: tumble 1.8s ease-in-out;
+}
+.pet.flutter {
+  animation: flutter 1.8s ease-in-out;
+}
+.pet.nuzzle {
+  animation: nuzzle 1.8s ease-in-out;
+}
+.pet.snuggle {
+  animation: snuggle 2.2s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.pet.dozing {
+  animation: doze 4s ease-in-out infinite;
+}
+.pet-prop {
+  position: absolute;
+  bottom: 20%;
+  left: 44%;
+  font-size: 48px;
+  pointer-events: none;
+  animation: snack 2s ease-in-out both;
+}
+.prop-toy {
+  animation: roll 2s ease-in-out both;
+}
+.prop-feather,
+.prop-play {
+  animation: feather 2s ease-in-out both;
+}
+#sleep-mask {
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  top: 32%;
+  height: 26%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #d0badf, #8e85bc);
+  border: 2px solid #f4e3c4;
+  border-radius: 45%;
+  box-shadow: 0 4px 12px #14273555;
+  color: #554269;
+}
+.sleep-lids {
+  font-size: clamp(28px, 6vw, 46px);
+  white-space: pre;
+  letter-spacing: 4px;
+}
+#sleep-mask small {
+  position: absolute;
+  right: -45%;
+  top: -60%;
+  color: #ffeac0;
+  font-size: 23px;
+  animation: dream 3s infinite;
+}
+@keyframes nibble {
+  50% {
+    transform: translateY(5px) rotate(-3deg) scale(1.025, 0.97);
+  }
+}
+@keyframes munch {
+  50% {
+    transform: scale(1.07, 0.94) rotate(4deg);
+  }
+}
+@keyframes tumble {
+  25% {
+    transform: translateX(-32px) rotate(-18deg);
+  }
+  65% {
+    transform: translateX(35px) rotate(20deg);
+  }
+}
+@keyframes flutter {
+  30% {
+    transform: translate(-18px, -30px) rotate(-8deg);
+  }
+  65% {
+    transform: translate(24px, -45px) rotate(10deg);
+  }
+}
+@keyframes nuzzle {
+  30% {
+    transform: scale(1.12) rotate(-8deg);
+  }
+  65% {
+    transform: scale(1.1) rotate(8deg);
+  }
+}
+@keyframes snuggle {
+  15% {
+    transform: translateY(12px) scale(0.92);
+  }
+  45%,
+  58% {
+    transform: translateY(22px) scale(1.55) rotate(-5deg);
+  }
+  80% {
+    transform: scale(0.97) rotate(3deg);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes doze {
+  50% {
+    transform: translateY(7px) scale(1.025, 0.98);
+  }
+}
+@keyframes dream {
+  to {
+    transform: translate(15px, -32px);
+    opacity: 0;
+  }
+}
+@keyframes snack {
+  0% {
+    transform: translateY(70px);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-35px) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.1);
+  }
+}
+@keyframes roll {
+  0% {
+    transform: translateX(-120px) rotate(-180deg);
+  }
+  55% {
+    transform: translateX(100px) rotate(180deg);
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+}
+@keyframes feather {
+  0% {
+    transform: translate(-50px, -90px);
+  }
+  50% {
+    transform: translate(70px, -130px) rotate(40deg);
+  }
+  100% {
+    transform: translate(0, -40px);
+    opacity: 0;
+  }
+}
+.game-clock {
+  padding: 12px;
+  border-radius: 16px;
+  background: #eaf1e4;
+  color: #294e49;
+  font-variant-numeric: tabular-nums;
+}
+.game-buddy {
+  width: 100px;
+  margin: auto;
+}
+.game-buddy .gallery-art {
+  width: 100px;
+  height: 100px;
+  animation: doze 3s infinite;
+}
+.game-buddy.cheer {
+  animation: nuzzle 0.7s;
+}
+.word-choices,
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+.word-choices button,
+.memory-grid button {
+  min-height: 72px;
+  border: 1px solid #c1d8bb;
+  background: #f3eddb;
+  border-radius: 18px;
+  color: #294e49;
+  font-size: 22px;
+  transition: transform 0.2s;
+}
+.word-choices button:active,
+.memory-grid button:active {
+  transform: scale(0.94);
+}
+.memory-grid button.matched {
+  background: #d0eacb;
+}
+.word-target {
+  font-size: 27px;
+  text-align: center;
+}
+.star-field {
+  position: relative;
+  height: 235px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at bottom, #5d8d8c, #1f364e);
+  border-radius: 22px;
+}
+.star-field button {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border: 0;
+  background: #fff1;
+  font-size: 32px;
+  border-radius: 50%;
+  animation: starfloat 2.5s ease-in-out infinite alternate;
+}
+@keyframes starfloat {
+  to {
+    transform: translateY(30px) rotate(20deg);
+  }
+}
+#games-dialog .gallery-art {
+  max-width: 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pet,
+  .pet-prop,
+  #sleep-mask small,
+  .game-buddy,
+  .game-buddy .gallery-art,
+  .star-field button {
+    animation: none !important;
+  }
+}
+#world.paused .pet,
+#world.paused .pet-prop,
+#world.paused #sleep-mask small {
+  animation: none !important;
+}

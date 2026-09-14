@@ -5,7 +5,8 @@
     enabled = false,
     next = 0,
     step = 0,
-    master;
+    master,
+    ambient;
   const melody = [
     72, 76, 79, 81, 79, 76, 74, 67, 69, 72, 76, 79, 76, 72, 69, 67, 65, 69, 72,
     77, 76, 72, 69, 65, 67, 71, 74, 79, 77, 74, 71, 67,
@@ -37,12 +38,31 @@
     if (!enabled || document.hidden) return;
     while (next < ctx.currentTime + 0.3) {
       const bar = Math.floor(step / 8) % 4;
-      note(melody[step % 32], next, 1.2, 0.12, "sine");
+      const scene = window.dailyScene || 0,
+        shift = [0, 5, -3][scene];
+      note(melody[(step + scene * 8) % 32] + shift, next, 1.2, 0.1, "sine");
+      if (step % 8 === 0) {
+        if (scene === 1) {
+          note(91, next, 0.16, 0.03);
+          note(96, next + 0.2, 0.2, 0.025);
+        } else if (scene === 0) note(84, next, 2, 0.025);
+        else {
+          note(98, next, 0.07, 0.012);
+          note(98, next + 0.15, 0.07, 0.012);
+        }
+      }
       if (step % 2 === 0)
-        note(chords[bar][(step / 2) % 3] + 12, next, 1.6, 0.06, "triangle");
-      if (step % 8 === 0) chords[bar].forEach((n) => note(n, next, 4, 0.04));
+        note(
+          chords[bar][(step / 2) % 3] + 12 + shift,
+          next,
+          1.6,
+          0.06,
+          "triangle",
+        );
+      if (step % 8 === 0)
+        chords[bar].forEach((n) => note(n + shift, next, 4, 0.04));
       step++;
-      next += 0.48;
+      next += [0.56, 0.45, 0.64][scene];
     }
   }
   async function toggle() {
@@ -57,6 +77,31 @@
           master = ctx.createGain();
           master.gain.value = 0.4;
           master.connect(ctx.destination);
+        }
+        if (!ambient) {
+          const buffer = ctx.createBuffer(
+              1,
+              ctx.sampleRate * 3,
+              ctx.sampleRate,
+            ),
+            data = buffer.getChannelData(0);
+          let last = 0;
+          for (let i = 0; i < data.length; i++) {
+            last = (last + (Math.random() * 2 - 1) * 0.015) / 1.015;
+            data[i] = last;
+          }
+          ambient = ctx.createBufferSource();
+          ambient.buffer = buffer;
+          ambient.loop = true;
+          const filter = ctx.createBiquadFilter();
+          filter.type = "lowpass";
+          filter.frequency.value = [700, 1200, 450][window.dailyScene || 0];
+          const breeze = ctx.createGain();
+          breeze.gain.value = 0.12;
+          ambient.connect(filter);
+          filter.connect(breeze);
+          breeze.connect(master);
+          ambient.start();
         }
         await ctx.resume();
         enabled = true;

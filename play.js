@@ -74,27 +74,56 @@ function gallery() {
 }
 $("#gallery-button").onclick = gallery;
 let stopGame = () => {};
-const gameNames = { race: "林间赛跑", hide: "花园捉迷藏", disc: "彩虹飞盘" };
+const gameNames = DailyPlay.games;
+const BUDGET_KEY = "mido-play-minutes-v1";
+function budgetLeft() {
+  try {
+    return DailyPlay.remaining(
+      JSON.parse(localStorage.getItem(BUDGET_KEY)),
+      M.chinaDate(),
+    );
+  } catch {
+    return 0;
+  }
+}
+function reserveSecond() {
+  const date = M.chinaDate(),
+    left = budgetLeft();
+  if (left <= 0) return false;
+  try {
+    localStorage.setItem(
+      BUDGET_KEY,
+      JSON.stringify({ date, used: 601 - left }),
+    );
+    return true;
+  } catch {
+    return false;
+  }
+}
+function clockText() {
+  const left = Math.floor(budgetLeft());
+  return (
+    String(Math.floor(left / 60)).padStart(2, "0") +
+    ":" +
+    String(left % 60).padStart(2, "0")
+  );
+}
 function unlockedGames() {
   const day = state.homework?.days[M.chinaDate()];
-  if (!day?.credited || state.phase !== "pet") return [];
-  const names = Object.keys(gameNames),
-    offset = Number(M.chinaDate().replaceAll("-", "")) % 3;
-  return Array.from(
-    { length: Math.min(3, day.tasks.length) },
-    (_, i) => names[(i + offset) % 3],
-  );
+  return day?.credited && state.phase === "pet"
+    ? DailyPlay.daily(M.chinaDate())
+    : [];
 }
 function playground() {
   stopGame();
   const unlocked = unlockedGames();
   $("#games-content").innerHTML =
-    `<span class="dialog-eyebrow">今天的相伴时光</span><h2>和${safe(petName())}一起玩</h2><p>${unlocked.length ? `今天已开放 ${unlocked.length} 个小游戏，可以反复玩。` : "完成今天所有作业打卡，就会开放1—3个小游戏；任务越多，开放越多。"}</p><div class="game-menu">${Object.entries(
+    `<span class="dialog-eyebrow">今天的相伴时光</span><h2>和${safe(petName())}一起玩</h2><p>${unlocked.length ? `今天随机开放 3 个小游戏，合计最多玩 10 分钟。` : "完成今天全部约定后，随机开放 3 个小游戏。"}</p><p class="game-clock">今天剩余 ${clockText()}</p><div class="game-menu">${Object.entries(
       gameNames,
     )
       .map(
         ([key, name]) =>
-          `<button class="primary" data-game="${key}" ${unlocked.includes(key) ? "" : "disabled"}>${{ race: "🏁", hide: "🌿", disc: "🥏" }[key]} ${name}${state.playHistory?.[M.chinaDate()]?.includes(key) ? " · 玩过啦" : ""}</button>`,
+          `<button class="primary" data-game="${key}" ${unlocked.includes(key) && budgetLeft() > 0 ? "" : "disabled"}>${{ race: "🏁", hide: "🌿", disc: "🥏", words: "🔤", memory: "🪄", stars: "🌟" }[key]} ${name}${state.playHistory?.[M.chinaDate()]?.includes(key) ? " · 玩过啦" : ""}</button>`,
       )
       .join(
         "",
@@ -124,26 +153,57 @@ async function finishGame(kind, date) {
   tone("adopt");
 }
 function startGame(kind) {
-  if (!unlockedGames().includes(kind)) return;
+  if (!unlockedGames().includes(kind) || budgetLeft() <= 0) return;
   stopGame();
   let frame = 0,
     alive = true;
   const date = M.chinaDate();
+  let clockTimer;
   stopGame = () => {
     alive = false;
+    clearInterval(clockTimer);
     cancelAnimationFrame(frame);
   };
   const content = $("#games-content");
-  content.innerHTML = `<span class="dialog-eyebrow">${gameNames[kind]}</span><h2>${safe(petName())}准备好啦</h2><div id="game-arena"></div><p id="game-note" role="status"></p><button class="text-button" id="quit-game">回到游乐场</button>`;
+  content.innerHTML = `<span class="dialog-eyebrow">${gameNames[kind]}</span><h2>${safe(petName())}准备好啦</h2><p class="game-clock" id="game-clock"></p><div class="game-buddy">${portrait(state.species, M.growth(state.completedDates.length).index)}</div><div id="game-arena"></div><p id="game-note" role="status"></p><button class="text-button" id="quit-game">回到游乐场</button>`;
   $("#quit-game").onclick = playground;
+  const clockTick = () => {
+    if (!alive) return;
+    if (document.hidden || M.chinaDate() !== date || !reserveSecond()) {
+      stopGame();
+      playground();
+      return;
+    }
+    $("#game-clock").textContent =
+      "今天剩余 " + clockText() + " · 每日共10分钟";
+  };
+  clockTick();
+  if (!alive) return;
+  clockTimer = setInterval(clockTick, 1000);
+  const cheer = () => {
+    window.PetLife?.voice("play");
+    const buddy = $(".game-buddy");
+    buddy?.classList.remove("cheer");
+    requestAnimationFrame(() => buddy?.classList.add("cheer"));
+  };
+  if (["words", "memory", "stars"].includes(kind)) {
+    startExtraGame(
+      kind,
+      () => alive,
+      () => finishGame(kind, date),
+      cheer,
+    );
+    return;
+  }
   if (kind === "race") {
     let progress = 0;
     $("#game-arena").innerHTML =
       `<div class="race-track"><div id="race-runner">${portrait(state.species, 0)}</div><span class="race-finish">🏁</span></div><button class="primary" id="race-step">轻点，为小伙伴加油</button>`;
-    $("#game-note").textContent = "一起跑过12段小路，没有时间限制。";
+    $("#game-note").textContent = "一起跑过12段小路，慢慢来；计入今日10分钟。";
     $("#race-step").onclick = () => {
       if (!alive) return;
       progress++;
+      cheer();
       $("#race-runner").style.left = (progress / 12) * 70 + "%";
       $("#game-note").textContent = `已经跑过 ${progress} / 12 段小路`;
       tone();
@@ -162,6 +222,7 @@ function startGame(kind) {
           tries++;
           b.disabled = true;
           if (Number(b.dataset.bush) === secret) {
+            cheer();
             b.innerHTML = portrait(state.species, 0);
             $("#game-note").textContent = "找到啦！它正等着给你一个拥抱。";
             const done = document.createElement("button");
@@ -200,6 +261,7 @@ function startGame(kind) {
       if (!alive) return;
       if (Math.abs(position - 0.5) < 0.22 || misses >= 3) {
         hits++;
+        cheer();
         misses = 0;
         tone("adopt");
         $("#game-note").textContent = `接住啦！已经传接 ${hits} / 3 次`;
@@ -209,5 +271,138 @@ function startGame(kind) {
         $("#game-note").textContent = "飞盘轻轻落在草地上，慢慢来，再试一次。";
       }
     };
+  }
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) stopGame();
+  else if ($("#games-dialog").open) playground();
+});
+function startExtraGame(kind, alive, done, cheer) {
+  const arena = $("#game-arena"),
+    note = $("#game-note");
+  if (kind === "words") {
+    let round = 0;
+    const words = DailyPlay.shuffle(
+      Vocabulary.words(),
+      M.chinaDate() + "words",
+    ).slice(0, 12);
+    function show() {
+      const group = words.slice(round * 4, round * 4 + 4),
+        target = group[0];
+      arena.innerHTML =
+        '<p class="word-target">' +
+        target.icon +
+        " 找到「" +
+        safe(target.chinese) +
+        '」</p><div class="word-choices">' +
+        DailyPlay.shuffle(group, String(round) + M.chinaDate())
+          .map(
+            (w) =>
+              '<button data-word="' + w.id + '">' + safe(w.word) + "</button>",
+          )
+          .join("") +
+        "</div>";
+      note.textContent = "第 " + (round + 1) + " / 3 轮 · 帮小伙伴找到单词宝藏";
+      arena.querySelectorAll("[data-word]").forEach(
+        (b) =>
+          (b.onclick = () => {
+            if (!alive()) return;
+            if (b.dataset.word !== target.id) {
+              b.disabled = true;
+              note.textContent = "再想想，小伙伴陪你慢慢找。";
+              return;
+            }
+            cheer();
+            round++;
+            if (round === 3) done();
+            else show();
+          }),
+      );
+    }
+    show();
+  } else if (kind === "memory") {
+    const cards = DailyPlay.shuffle(
+      ["🌙", "🌙", "🍎", "🍎", "🌸", "🌸"],
+      M.chinaDate() + "memory",
+    );
+    let first = null,
+      busy = false,
+      matches = 0;
+    arena.innerHTML =
+      '<div class="memory-grid">' +
+      cards
+        .map(
+          (c, i) =>
+            '<button data-card="' +
+            i +
+            '" aria-label="翻开第' +
+            (i + 1) +
+            '张卡">✧</button>',
+        )
+        .join("") +
+      "</div>";
+    note.textContent = "翻出相同的两张卡，收集三对小宝物。";
+    arena.querySelectorAll("[data-card]").forEach(
+      (b) =>
+        (b.onclick = () => {
+          if (!alive() || busy || b === first || b.disabled) return;
+          b.textContent = cards[Number(b.dataset.card)];
+          if (!first) {
+            first = b;
+            return;
+          }
+          const a = first;
+          first = null;
+          if (a.textContent === b.textContent) {
+            a.disabled = b.disabled = true;
+            a.classList.add("matched");
+            b.classList.add("matched");
+            matches++;
+            cheer();
+            if (matches === 3) done();
+          } else {
+            busy = true;
+            note.textContent = "记住它们的位置，再试试。";
+            setTimeout(() => {
+              if (!alive()) return;
+              a.textContent = b.textContent = "✧";
+              busy = false;
+            }, 800);
+          }
+        }),
+    );
+  } else {
+    let count = 0;
+    arena.innerHTML =
+      '<div class="star-field">' +
+      Array.from(
+        { length: 6 },
+        (_, i) =>
+          '<button data-star="' +
+          i +
+          '" style="left:' +
+          (8 + (i % 3) * 30) +
+          "%;top:" +
+          (10 + Math.floor(i / 3) * 95) +
+          'px" aria-label="采集第' +
+          (i + 1) +
+          '颗星星">⭐</button>',
+      ).join("") +
+      "</div>";
+    note.textContent = "轻点六颗星星，和小伙伴装满星光口袋。";
+    arena.querySelectorAll("[data-star]").forEach(
+      (b) =>
+        (b.onclick = () => {
+          if (!alive() || b.disabled) return;
+          b.disabled = true;
+          b.textContent = "✨";
+          b.style.opacity = ".3";
+          count++;
+          cheer();
+          note.textContent = "收集到了 " + count + " / 6 颗星星";
+          if (count === 6) done();
+        }),
+    );
   }
 }

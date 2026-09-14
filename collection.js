@@ -60,7 +60,11 @@
                 /^\d{4}-\d{2}-\d{2}$/.test(date) &&
                 Array.isArray(games) &&
                 games.length <= 3 &&
-                games.every((g) => ["race", "hide", "disc"].includes(g)),
+                games.every((g) =>
+                  ["race", "hide", "disc", "words", "memory", "stars"].includes(
+                    g,
+                  ),
+                ),
             ))) &&
         (s.activePetId === undefined || typeof s.activePetId === "string") &&
         (s.companions === undefined ||
