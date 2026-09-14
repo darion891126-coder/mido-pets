@@ -1,6 +1,6 @@
 /* Pet voices are original synthesized chirps, not animal recordings. */
 (function () {
-  let ctx, timer, sleepTimer;
+  let ctx, timer, sleepTimer, snoreTimer;
   const voices = [
     [740, 1110, 1480, "sine"],
     [220, 390, 300, "triangle"],
@@ -40,11 +40,50 @@
       }
     } catch {}
   }
+  function snore() {
+    if (!sound || document.hidden || !$("#pet").classList.contains("dozing"))
+      return;
+    try {
+      ctx ??= new (window.AudioContext || window.webkitAudioContext)();
+      ctx.resume();
+      const t = ctx.currentTime,
+        base = [165, 95, 210, 140, 110, 85][state.species];
+      const o = ctx.createOscillator(),
+        g = ctx.createGain(),
+        lfo = ctx.createOscillator(),
+        depth = ctx.createGain();
+      o.type = "triangle";
+      o.frequency.setValueAtTime(base, t);
+      o.frequency.linearRampToValueAtTime(base * 0.75, t + 1.2);
+      lfo.frequency.value = 22 + state.species * 2;
+      depth.gain.value = base * 0.06;
+      lfo.connect(depth);
+      depth.connect(o.frequency);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.023, t + 0.45);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.5);
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.start(t);
+      lfo.start(t);
+      o.stop(t + 1.6);
+      lfo.stop(t + 1.6);
+      o.onended = () => {
+        o.disconnect();
+        g.disconnect();
+        lfo.disconnect();
+        depth.disconnect();
+      };
+    } catch {}
+  }
   function wake() {
     clearTimeout(timer);
+    document.querySelectorAll(".pet-prop").forEach((e) => e.remove());
     clearTimeout(sleepTimer);
+    clearInterval(snoreTimer);
+    if (state.phase === "pet") sprite($("#main-sprite"));
     $("#pet").classList.remove("dozing", "snuggle");
-    $("#sleep-mask")?.remove();
+    $(".sleep-breath")?.remove();
     $("#world").classList.remove("night");
     $("#pet").setAttribute("aria-label", "摸摸" + petName());
   }
@@ -69,12 +108,19 @@
       sleepTimer = setTimeout(
         () => {
           $("#pet").className = "pet dozing";
-          const mask = document.createElement("span");
-          mask.id = "sleep-mask";
-          mask.innerHTML =
-            '<span class="sleep-lids">⌣ ⌣</span><small>z Z z</small>';
-          mask.setAttribute("aria-hidden", "true");
-          $("#pet").append(mask);
+          const stage = ["baby", "toddler", "juvenile", "grown", "ultimate"][
+            M.growth(state.completedDates.length).index
+          ];
+          $("#main-sprite").style.backgroundImage =
+            'url("assets/pets-sleep-' + stage + '.png")';
+          $("#main-sprite").classList.add("sleep-art");
+          const breath = document.createElement("span");
+          breath.className = "sleep-breath";
+          breath.textContent = "· · ·";
+          breath.setAttribute("aria-hidden", "true");
+          $("#pet").append(breath);
+          snore();
+          snoreTimer = setInterval(snore, 4200);
           $("#pet").setAttribute(
             "aria-label",
             "正在睡觉的" + petName() + "，轻点唤醒",
@@ -106,7 +152,7 @@
   interact = (action) => act(action === "feed" ? "cookie" : action);
   const previous = $("#pet").onclick;
   $("#pet").onclick = () => (state.phase === "pet" ? act("touch") : previous());
-  const scenes = ["月光湖畔", "晨雾花谷", "暮色星丘"];
+  const scenes = ["月光湖畔", "暖金花谷", "翡翠森林"];
   function scene() {
     const date = M.chinaDate(),
       i = DailyPlay.seed(date) % 3;

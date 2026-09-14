@@ -6,6 +6,9 @@
     words: "单词寻宝",
     memory: "魔法翻翻乐",
     stars: "星星采集",
+    lily: "月光跳荷叶",
+    butterfly: "花谷追蝴蝶",
+    fruit: "果园接果果",
   };
   function seed(text) {
     let n = 2166136261;

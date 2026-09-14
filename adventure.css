@@ -1,0 +1,289 @@
+/* Painted scene cards, usable on touchscreens without drag gestures. */
+#games-dialog {
+  max-width: 720px;
+  background: linear-gradient(145deg, #f9f0db, #e3e9d8);
+  border: 1px solid #f8dbaa;
+}
+.game-menu {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.game-menu .primary {
+  min-height: 150px;
+  padding: 80px 12px 16px;
+  color: #fff5da;
+  text-shadow: 0 2px 5px #102b28;
+  border: 1px solid #d9c497;
+  background:
+    linear-gradient(0deg, #132e39e8, transparent),
+    url("assets/scene-flower-valley.png") center 48% / cover;
+  box-shadow: 0 8px 20px #293f4825;
+}
+.game-menu .primary:nth-child(3n + 1) {
+  background-image:
+    linear-gradient(0deg, #132e39e8, transparent),
+    url("assets/scene-moonlake.png");
+}
+.game-menu .primary:nth-child(3n + 2) {
+  background-image:
+    linear-gradient(0deg, #132e39e8, transparent), url("assets/forest.png");
+}
+.game-menu .primary:disabled {
+  filter: grayscale(0.7);
+  opacity: 0.55;
+}
+.game-menu .primary:not(:disabled):hover {
+  transform: translateY(-3px);
+}
+#game-arena {
+  border-radius: 24px;
+  overflow: hidden;
+}
+#game-arena:not(.adventure-arena) {
+  padding: 18px;
+  background:
+    linear-gradient(#173f4770, #173f47a0),
+    url("assets/scene-flower-valley.png") center 62% / cover;
+}
+#game-arena .word-target {
+  color: #fff1c9;
+  text-shadow: 0 2px 4px #123;
+}
+#game-arena .hiding-grid button {
+  background: #ffffff18;
+  box-shadow: inset 0 0 15px #dcf2c32a;
+}
+.memory-grid button {
+  box-shadow:
+    0 5px 0 #abc3a2,
+    0 9px 18px #102b2840;
+  background: linear-gradient(140deg, #fff7da, #cde0c1);
+  border: 2px solid #e9d69f;
+}
+.memory-grid button.matched {
+  animation: card-found 0.6s both;
+}
+@keyframes card-found {
+  50% {
+    transform: scale(1.09);
+    box-shadow: 0 0 25px #f9e7a8;
+  }
+}
+.quest-landscape {
+  height: 350px;
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(#223b5520, #16404735),
+    url("assets/scene-moonlake.png") center 56% / cover;
+  border: 2px solid #ddc895;
+  border-radius: 24px;
+}
+.butterfly .quest-landscape,
+.fruit .quest-landscape {
+  background-image:
+    linear-gradient(#223b5510, #16404725), url("assets/scene-flower-valley.png");
+}
+#quest-pet {
+  position: absolute;
+  left: 12%;
+  top: 235px;
+  width: 100px;
+  height: 100px;
+  z-index: 5;
+  pointer-events: none;
+  transition:
+    left 0.55s ease,
+    top 0.55s ease;
+}
+#quest-pet .gallery-art {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  filter: drop-shadow(0 10px 5px #142d4540);
+}
+#quest-pet.leaping .gallery-art {
+  animation: quest-leap 0.55s ease;
+}
+#quest-pet.quest-bounce .gallery-art {
+  animation: quest-hop 0.6s ease;
+}
+@keyframes quest-leap {
+  50% {
+    transform: translateY(-65px) rotate(-8deg);
+  }
+}
+@keyframes quest-hop {
+  50% {
+    transform: translateY(-18px) scale(1.04);
+  }
+}
+.quest-progress {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: 1px solid #e9d59f;
+  border-radius: 20px;
+  padding: 8px 14px;
+  background: #f7eedce8;
+  color: #294d4a;
+  z-index: 9;
+}
+.quest-prop {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url("assets/game-props.png") 0 0/300% 200% no-repeat;
+}
+.prop-art-apple {
+  background-position: 0 0;
+}
+.prop-art-butterfly {
+  background-position: 50% 0;
+}
+.prop-art-lily {
+  background-position: 100% 0;
+}
+.prop-art-basket {
+  background-position: 0 100%;
+}
+.prop-art-star {
+  background-position: 50% 100%;
+}
+.prop-art-bush {
+  background-position: 100% 100%;
+}
+.lily-pad {
+  position: absolute;
+  width: 78px;
+  height: 78px;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  transition: opacity 0.3s;
+}
+.lily-pad b {
+  position: absolute;
+  left: 30%;
+  top: 37%;
+  color: #fff7d6;
+  text-shadow: 0 2px 3px #143;
+}
+.lily-pad.next-pad {
+  box-shadow:
+    0 0 0 3px #f9e29d,
+    0 0 25px #fce2a6;
+  animation: pad-glow 1.5s infinite alternate;
+}
+.lily-pad:disabled {
+  opacity: 0.75;
+}
+.lily-pad.visited {
+  opacity: 0.5;
+}
+@keyframes pad-glow {
+  to {
+    transform: scale(1.08);
+  }
+}
+.quest-butterfly {
+  position: absolute;
+  width: 85px;
+  height: 85px;
+  background: none;
+  border: 0;
+  padding: 0;
+  animation: wing-float 2s ease-in-out var(--delay) infinite alternate;
+}
+.quest-butterfly.gold-wing {
+  filter: sepia(1) saturate(2);
+  border-radius: 50%;
+  box-shadow: 0 0 26px #ffe4a699;
+}
+.quest-butterfly.wing-away {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+@keyframes wing-float {
+  to {
+    transform: translate(8px, -14px) rotate(12deg);
+  }
+}
+#falling-fruit {
+  position: absolute;
+  top: 30px;
+  width: 70px;
+  height: 70px;
+  transition: left 0.3s;
+}
+#fruit-basket {
+  position: absolute;
+  top: 228px;
+  width: 100px;
+  height: 100px;
+  transition: left 0.3s;
+  z-index: 6;
+}
+#falling-fruit.fruit-fall {
+  animation: fruit-drop 0.65s ease-in both;
+}
+@keyframes fruit-drop {
+  to {
+    transform: translateY(210px) rotate(35deg);
+    opacity: 0.2;
+  }
+}
+.basket-controls {
+  display: flex;
+  gap: 8px;
+  margin: 15px 0;
+}
+.basket-controls button {
+  flex: 1;
+  min-height: 52px;
+  border: 1px solid #c4b282;
+  border-radius: 16px;
+  background: #f6e6bd;
+  color: #294d4a;
+}
+.sleep-breath {
+  position: absolute;
+  right: 12%;
+  top: 22%;
+  color: #fce9c1;
+  font-size: 24px;
+  animation: dream 4s infinite;
+  pointer-events: none;
+}
+@media (max-width: 420px) {
+  #quest-pet {
+    width: 80px;
+    height: 80px;
+  }
+  .lily-pad {
+    width: 64px;
+    height: 64px;
+  }
+  .game-menu {
+    gap: 9px;
+  }
+  .game-menu .primary {
+    font-size: 14px;
+    min-height: 135px;
+  }
+  .basket-controls button {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quest-landscape *,
+  .memory-grid button {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+body.motion-paused .quest-landscape * {
+  animation: none !important;
+}

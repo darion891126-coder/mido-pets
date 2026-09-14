@@ -123,7 +123,7 @@ function playground() {
     )
       .map(
         ([key, name]) =>
-          `<button class="primary" data-game="${key}" ${unlocked.includes(key) && budgetLeft() > 0 ? "" : "disabled"}>${{ race: "🏁", hide: "🌿", disc: "🥏", words: "🔤", memory: "🪄", stars: "🌟" }[key]} ${name}${state.playHistory?.[M.chinaDate()]?.includes(key) ? " · 玩过啦" : ""}</button>`,
+          `<button class="primary" data-game="${key}" ${unlocked.includes(key) && budgetLeft() > 0 ? "" : "disabled"}>${{ race: "🏁", hide: "🌿", disc: "🥏", words: "🔤", memory: "🪄", stars: "🌟", lily: "🪷", butterfly: "🦋", fruit: "🍎" }[key]} ${name}${state.playHistory?.[M.chinaDate()]?.includes(key) ? " · 玩过啦" : ""}</button>`,
       )
       .join(
         "",
@@ -145,7 +145,12 @@ async function finishGame(kind, date) {
       const keys = Object.keys(s.playHistory).sort();
       while (keys.length > 90) delete s.playHistory[keys.shift()];
     });
-  } catch {}
+  } catch (error) {
+    $("#games-content").innerHTML =
+      '<h2>回忆暂时没能保存</h2><p>请先导出存档，检查设备储存空间后再试。</p><button id="back-games" class="primary">回到游乐场</button>';
+    $("#back-games").onclick = playground;
+    return;
+  }
   $("#games-content").innerHTML =
     `<span class="dialog-eyebrow">今天又多了一个小回忆</span>${portrait(state.species, M.growth(state.completedDates.length).index)}<h2>${safe(petName())}开心地扑向你！</h2><p>一起玩的时光，才是最棒的礼物。</p><button id="back-games" class="primary">再挑一个游戏</button>`;
   $("#back-games").onclick = playground;
@@ -186,6 +191,16 @@ function startGame(kind) {
     buddy?.classList.remove("cheer");
     requestAnimationFrame(() => buddy?.classList.add("cheer"));
   };
+  if (["lily", "butterfly", "fruit"].includes(kind)) {
+    $(".game-buddy").hidden = true;
+    startAdventure(
+      kind,
+      () => alive,
+      () => finishGame(kind, date),
+      cheer,
+    );
+    return;
+  }
   if (["words", "memory", "stars"].includes(kind)) {
     startExtraGame(
       kind,

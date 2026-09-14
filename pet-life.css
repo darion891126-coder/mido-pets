@@ -6,13 +6,13 @@
   margin: 10px;
 }
 #world[data-scene="0"] .scenery {
-  background-image: url("assets/scene-lake.svg");
+  background-image: url("assets/scene-moonlake.png");
 }
 #world[data-scene="1"] .scenery {
-  background-image: url("assets/scene-meadow.svg");
+  background-image: url("assets/scene-flower-valley.png");
 }
 #world[data-scene="2"] .scenery {
-  background-image: url("assets/scene-hills.svg");
+  background-image: url("assets/forest.png");
 }
 .pet.nibble {
   animation: nibble 0.35s ease-in-out 5;
@@ -49,33 +49,6 @@
 .prop-feather,
 .prop-play {
   animation: feather 2s ease-in-out both;
-}
-#sleep-mask {
-  position: absolute;
-  left: 25%;
-  right: 25%;
-  top: 32%;
-  height: 26%;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, #d0badf, #8e85bc);
-  border: 2px solid #f4e3c4;
-  border-radius: 45%;
-  box-shadow: 0 4px 12px #14273555;
-  color: #554269;
-}
-.sleep-lids {
-  font-size: clamp(28px, 6vw, 46px);
-  white-space: pre;
-  letter-spacing: 4px;
-}
-#sleep-mask small {
-  position: absolute;
-  right: -45%;
-  top: -60%;
-  color: #ffeac0;
-  font-size: 23px;
-  animation: dream 3s infinite;
 }
 @keyframes nibble {
   50% {
@@ -252,7 +225,7 @@
 @media (prefers-reduced-motion: reduce) {
   .pet,
   .pet-prop,
-  #sleep-mask small,
+  .sleep-breath,
   .game-buddy,
   .game-buddy .gallery-art,
   .star-field button {
@@ -261,6 +234,11 @@
 }
 #world.paused .pet,
 #world.paused .pet-prop,
-#world.paused #sleep-mask small {
+#world.paused .sleep-breath {
   animation: none !important;
+}
+
+.sleep-art {
+  -webkit-mask-image: radial-gradient(ellipse, black 53%, transparent 73%);
+  mask-image: radial-gradient(ellipse, black 53%, transparent 73%);
 }

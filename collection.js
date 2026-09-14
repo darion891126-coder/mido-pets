@@ -59,11 +59,19 @@
               ([date, games]) =>
                 /^\d{4}-\d{2}-\d{2}$/.test(date) &&
                 Array.isArray(games) &&
-                games.length <= 3 &&
+                games.length <= 9 &&
                 games.every((g) =>
-                  ["race", "hide", "disc", "words", "memory", "stars"].includes(
-                    g,
-                  ),
+                  [
+                    "race",
+                    "hide",
+                    "disc",
+                    "words",
+                    "memory",
+                    "stars",
+                    "lily",
+                    "butterfly",
+                    "fruit",
+                  ].includes(g),
                 ),
             ))) &&
         (s.activePetId === undefined || typeof s.activePetId === "string") &&
