@@ -106,10 +106,10 @@ function sprite(el, days = state.completedDates.length) {
   el.style.backgroundImage =
     "url('assets/" +
     [
-      "pets-baby",
-      "pets-juvenile",
-      "pets-grown",
-      "pets-ultimate",
+      "pets-gallery-baby",
+      "pets-gallery-juvenile",
+      "pets-gallery-grown",
+      "pets-gallery-ultimate",
     ][stage.index] +
     ".png')";
   el.style.backgroundSize = "300% 200%";

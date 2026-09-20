@@ -239,8 +239,8 @@
 }
 
 .sleep-art {
-  -webkit-mask-image: radial-gradient(ellipse, black 53%, transparent 73%);
-  mask-image: radial-gradient(ellipse, black 53%, transparent 73%);
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 .pet.dozing.settling {

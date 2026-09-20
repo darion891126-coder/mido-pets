@@ -182,6 +182,8 @@ h1 br {
 }
 .pet {
   position: absolute;
+  padding: 0;
+  overflow: visible;
   inset: 18px 50px 10px;
   border: 0;
   background: none;
@@ -192,9 +194,9 @@ h1 br {
 }
 .sprite {
   display: block;
-  background-image: url("assets/pets.png");
+  background-image: url("assets/pets-gallery-baby.png");
   background-repeat: no-repeat;
-  background-size: 200% 200%;
+  background-size: 300% 200%;
   background-position: 0 0;
   width: 100%;
   height: 100%;

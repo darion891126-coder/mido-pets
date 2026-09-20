@@ -1,8 +1,8 @@
 const artSheets = [
-  "pets-baby",
-  "pets-juvenile",
-  "pets-grown",
-  "pets-ultimate",
+  "pets-gallery-baby",
+  "pets-gallery-juvenile",
+  "pets-gallery-grown",
+  "pets-gallery-ultimate",
 ];
 const finalDetails = [
   "彩虹羽翼 · 星辉独角",

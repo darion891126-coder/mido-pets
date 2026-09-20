@@ -403,7 +403,7 @@ body.inactive .backpack-item > span {
   display: block;
   width: 100%;
   aspect-ratio: 1;
-  background-image: url("assets/pets-baby.png");
+  background-image: url("assets/pets-gallery-baby.png");
   background-size: 300% 200%;
   background-repeat: no-repeat;
 }

@@ -709,12 +709,7 @@ dialog .quiz-note {
   display: block;
 }
 .sprite.mature-art {
-  border-radius: 28%;
-  mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    #000 5%,
-    #000 92%,
-    transparent
-  );
+  border-radius: 0;
+  -webkit-mask-image: none;
+  mask-image: none;
 }
