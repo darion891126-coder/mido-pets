@@ -40,7 +40,7 @@
   border-radius: 24px;
   overflow: hidden;
 }
-#game-arena:not(.adventure-arena) {
+#game-arena:not(.adventure-arena):not(.arcade-arena) {
   padding: 18px;
   background:
     linear-gradient(#173f4770, #173f47a0),

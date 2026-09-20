@@ -59,9 +59,10 @@
               ([date, games]) =>
                 /^\d{4}-\d{2}-\d{2}$/.test(date) &&
                 Array.isArray(games) &&
-                games.length <= 9 &&
+                games.length <= 19 &&
                 games.every((g) =>
                   [
+                    "water", "puzzle", "sum", "sudoku", "merge", "kitchen", "mole", "gomoku", "twentyfour", "blocks",
                     "race",
                     "hide",
                     "disc",
@@ -74,6 +75,7 @@
                   ].includes(g),
                 ),
             ))) &&
+        (s.arcade === undefined || (s.arcade && typeof s.arcade === "object" && !Array.isArray(s.arcade) && Object.keys(s.arcade).length <= 10 && Object.entries(s.arcade).every(([key,p]) => ["water", "puzzle", "sum", "sudoku", "merge", "kitchen", "mole", "gomoku", "twentyfour", "blocks"].includes(key) && p && Number.isInteger(p.level) && p.level >= 1 && p.level <= 9999 && [0,1].includes(p.mode)))) &&
         (s.activePetId === undefined || typeof s.activePetId === "string") &&
         (s.companions === undefined ||
           (Array.isArray(s.companions) &&

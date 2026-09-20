@@ -1,0 +1,711 @@
+/* A shared fairytale cabinet, with readable touch targets and quiet motion. */
+.food-prop {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  vertical-align: middle;
+  background-image: url("assets/arcade-props.png");
+  background-size: 300% 300%;
+  background-repeat: no-repeat;
+  font-size: 0;
+  line-height: 0;
+}
+.customer-order .food-prop {
+  width: 42px;
+  height: 42px;
+  display: inline-block;
+}
+.burger-plate .food-prop {
+  width: 48px;
+  height: 48px;
+}
+.arcade-kitchen .arcade-tools .food-prop {
+  display: block;
+  margin: auto;
+}
+.arcade-kitchen .arcade-tools button {
+  min-width: 78px;
+}
+.mole-hole .food-prop {
+  width: 55px;
+  height: 55px;
+  animation: tile-arrive 0.2s ease;
+}
+#games-dialog {
+  width: min(780px, calc(100% - 20px));
+  background: #fffbed;
+  color: #244d47;
+}
+#games-dialog h2 {
+  font-size: clamp(24px, 5vw, 34px);
+}
+.game-menu {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.game-menu .game-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 18px 16px;
+  min-height: 160px;
+  border: 1px solid #c7d7c5;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #f0f5df, #dfeee1);
+  color: #254e46;
+  box-shadow: 0 5px 0 #ccdccc;
+  cursor: pointer;
+  transition:
+    transform 0.18s,
+    opacity 0.18s;
+}
+.game-menu .game-card:nth-child(3n + 2) {
+  background: linear-gradient(145deg, #fff0ce, #f4dfc6);
+  border-color: #e6d1ae;
+  box-shadow: 0 5px 0 #e1d0b6;
+}
+.game-menu .game-card:nth-child(3n) {
+  background: linear-gradient(145deg, #efebff, #e2e5f3);
+  border-color: #d2cce2;
+  box-shadow: 0 5px 0 #d6d1e3;
+}
+.game-card:disabled {
+  opacity: 0.5;
+  box-shadow: none;
+  cursor: default;
+}
+.game-card:not(:disabled):active {
+  transform: translateY(3px);
+}
+.game-card-icon {
+  font:
+    32px Georgia,
+    serif;
+  color: #537461;
+}
+.game-card strong {
+  font-size: 17px;
+}
+.game-card small {
+  font-size: 11px;
+  line-height: 1.7;
+}
+.game-card em {
+  font-size: 10px;
+  font-style: normal;
+  padding: 3px 9px;
+  background: #fff9;
+  border-radius: 20px;
+}
+.game-card .game-open {
+  background: #26594d;
+  color: #fff4d7;
+}
+.arcade-lobby {
+  padding: 24px 16px;
+  border-radius: 24px;
+  background:
+    linear-gradient(#fffaf0e6, #f2ebdbe6),
+    url("assets/scene-flower-valley.png") center/cover;
+  box-shadow: inset 0 0 0 1px #d3caaa;
+  text-align: center;
+}
+.arcade-emblem {
+  width: 76px;
+  height: 76px;
+  margin: auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid #d2b565;
+  background: #ffefb9;
+  color: #596c54;
+  font:
+    36px Georgia,
+    serif;
+  box-shadow: 0 0 0 7px #fff7dd;
+}
+.arcade-lobby h3 {
+  font-size: 25px;
+  margin: 20px 0 10px;
+}
+.difficulty-options,
+.arcade-tools {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+.arcade-start {
+  margin: 12px auto 0 !important;
+}
+.arcade-action,
+.math-operation {
+  padding: 10px 14px;
+  min-height: 44px;
+  min-width: 44px;
+  border: 1px solid #bdd0bd;
+  border-radius: 14px;
+  background: #f3f8e8;
+  color: #28534c;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #d1ddc9;
+}
+.arcade-action:active,
+.math-operation:active {
+  transform: translateY(2px);
+}
+.arcade-action[aria-pressed="true"],
+.math-operation[aria-pressed="true"] {
+  background: #2a6455;
+  color: #fff6d9;
+  border-color: #2a6455;
+}
+.arcade-level {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #8c7650;
+}
+.arcade-instruction {
+  max-width: 520px;
+  margin: 12px auto 20px !important;
+  color: #365950 !important;
+  font-size: 14px !important;
+  line-height: 1.9 !important;
+}
+.arcade-arena {
+  padding: 20px 12px;
+  border: 1px solid #d7dfca;
+  background: linear-gradient(145deg, #fcfaef, #eef4e7);
+  border-radius: 24px;
+  box-shadow: 0 8px 25px #345e4310;
+}
+.arcade-board {
+  max-width: 440px;
+  margin: auto;
+  outline: none;
+}
+.arcade-board:focus-visible {
+  outline: 3px solid #bb933c;
+  outline-offset: 4px;
+}
+.arcade-arena button:focus-visible {
+  outline: 3px solid #bb933c;
+  outline-offset: 2px;
+}
+.game-buddy {
+  height: 96px !important;
+}
+.game-buddy .gallery-art {
+  width: 110px !important;
+  height: 110px !important;
+  transform: translateY(-12px);
+}
+.potion-rack {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 28px 12px;
+  padding: 20px 4px 30px;
+  background: linear-gradient(
+    transparent 82%,
+    #b9ccad 82%,
+    #e8f0dc 90%,
+    transparent 91%
+  );
+}
+.potion-bottle {
+  position: relative;
+  background: linear-gradient(90deg, #fff5, #ffffffa8 25%, #d6e8df50);
+  width: 56px;
+  height: 170px;
+  padding: 16px 4px 4px;
+  border: 2px solid #99b2aa;
+  border-top: 5px solid #99b2aa;
+  border-radius: 9px 9px 22px 22px;
+  cursor: pointer;
+  box-shadow:
+    inset 4px 0 4px #fff9,
+    0 5px 8px #264f4020;
+  transition: transform 0.25s;
+}
+.potion-bottle[aria-pressed="true"] {
+  transform: translateY(-12px) rotate(-8deg);
+  border-color: #b88b38;
+}
+.potion-bottle small {
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  right: 0;
+  color: #5b7362;
+}
+.potion-liquid {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 0 16px 16px;
+  overflow: hidden;
+}
+.potion-liquid > span {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 14px;
+  border-top: 1px solid #fff5;
+}
+.potion-pour {
+  animation: potion-settle 0.5s ease;
+}
+.picture-puzzle {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  aspect-ratio: 1;
+  gap: 3px;
+  padding: 6px;
+  background: #aabd9f;
+  border-radius: 16px;
+  touch-action: none;
+}
+.puzzle-piece {
+  border: 1px solid #fff6;
+  border-radius: 5px;
+  min-width: 0;
+  aspect-ratio: 1;
+  position: relative;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.puzzle-piece[aria-pressed="true"] {
+  outline: 3px solid #ffd266;
+  z-index: 1;
+  transform: scale(0.94);
+}
+.puzzle-piece small {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: #123d428c;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+.puzzle-preview {
+  width: 140px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid white;
+}
+.number-candies {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.number-candy {
+  min-width: 0;
+  min-height: 58px;
+  border: 1px solid #e8cf89;
+  background: linear-gradient(135deg, #fff4cc, #efcf88);
+  box-shadow: 0 4px 0 #dcb977;
+  border-radius: 17px;
+  font:
+    bold 25px Georgia,
+    serif;
+  color: #614b26;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    opacity 0.2s;
+}
+.number-candy[aria-pressed="true"] {
+  transform: translateY(-5px);
+  outline: 3px solid #769b82;
+}
+.number-candy:disabled {
+  opacity: 0.25;
+  box-shadow: none;
+}
+.gentle-shake {
+  animation: gentle-shake 0.3s;
+}
+.sudoku-board {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  border: 3px solid #809d8c;
+  border-radius: 10px;
+  overflow: hidden;
+  gap: 0;
+  aspect-ratio: 1;
+}
+.sudoku-cell {
+  min-width: 0;
+  aspect-ratio: 1;
+  border: 1px solid #cdd9c7;
+  background: #fffdf1;
+  color: #355f52;
+  font:
+    24px Georgia,
+    serif;
+  padding: 0;
+  cursor: pointer;
+}
+.sudoku-cell:disabled {
+  background: #dce7d4;
+  color: #46644d;
+}
+.sudoku-cell[aria-pressed="true"] {
+  background: #ffe7a8;
+  box-shadow: inset 0 0 0 3px #d5ac53;
+}
+.sudoku-cell.box-right {
+  border-right: 3px solid #809d8c;
+}
+.sudoku-cell.box-bottom {
+  border-bottom: 3px solid #809d8c;
+}
+.merge-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background: #c3d0b9;
+  padding: 10px;
+  border-radius: 20px;
+  touch-action: none;
+  aspect-ratio: 1;
+}
+.merge-tile {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  border-radius: 12px;
+  background: hsl(var(--tile-hue) 46% 82%);
+  color: #27493e;
+  font:
+    bold clamp(18px, 4vw, 30px) Georgia,
+    serif;
+  box-shadow: inset 0 1px #fff8;
+  animation: tile-arrive 0.18s ease-out;
+}
+.merge-tile:empty {
+  background: #e3ead9;
+  box-shadow: none;
+}
+.arcade-merge .arcade-tools strong {
+  width: 100%;
+  font-size: 14px;
+  color: #5f785e;
+}
+.kitchen-board {
+  background:
+    linear-gradient(#fff8e9dc, #fff3d6dc),
+    url("assets/scene-flower-valley.png") center/cover;
+  border-radius: 20px;
+  padding: 18px;
+}
+.customer-order {
+  border-radius: 16px;
+  background: #fffdfa;
+  padding: 14px;
+  box-shadow: 0 4px 10px #795a2412;
+}
+.customer-order span {
+  display: block;
+  font-size: 11px;
+  color: #938160;
+}
+.customer-order strong {
+  display: block;
+  font-size: 24px;
+  margin-top: 8px;
+}
+.burger-plate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 22px auto 5px;
+  padding: 12px;
+  background: radial-gradient(ellipse at bottom, #fff 60%, transparent 61%);
+}
+.burger-plate > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 48px;
+  align-items: center;
+}
+.burger-plate small {
+  font-size: 12px;
+  color: #7d8c73;
+}
+.bun {
+  font-size: 42px;
+  line-height: 1;
+}
+.ingredient-pop {
+  font-size: 35px;
+  animation: tile-arrive 0.2s ease;
+}
+.mole-garden {
+  display: flex;
+  gap: 14px;
+}
+.mole-garden section {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 6px;
+  border: 1px solid #c4d8b7;
+  background: linear-gradient(#ddecce, #bbd5ab);
+  border-radius: 20px;
+}
+.mole-garden strong {
+  font-size: 12px;
+}
+.mole-holes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+.mole-hole {
+  min-width: 0;
+  height: 60px;
+  background: radial-gradient(
+    ellipse at 50% 70%,
+    #726447 50%,
+    #d9e6bd 52%,
+    #aecb9f 69%,
+    transparent 71%
+  );
+  border: 0;
+  font-size: 32px;
+  cursor: pointer;
+  animation: tile-arrive 0.18s ease;
+}
+.gomoku-board {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  aspect-ratio: 1;
+  padding: 10px;
+  background: linear-gradient(135deg, #efdaaa, #dec18e);
+  border: 4px solid #b0986c;
+  border-radius: 12px;
+  gap: 0;
+}
+.gomoku-point {
+  aspect-ratio: 1;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  background:
+    linear-gradient(
+      transparent calc(50% - 0.5px),
+      #9f885c calc(50% - 0.5px),
+      #9f885c calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    linear-gradient(
+      90deg,
+      transparent calc(50% - 0.5px),
+      #9f885c calc(50% - 0.5px),
+      #9f885c calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    );
+  font-size: clamp(18px, 4vw, 30px);
+  line-height: 1;
+  color: #2d5547;
+  cursor: pointer;
+}
+.gomoku-point[data-stone="2"] {
+  color: #fffdf1;
+  text-shadow: 0 1px 3px #6c582e;
+}
+.twentyfour-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.twentyfour-cards .number-candy {
+  font-size: 18px;
+  min-height: 80px;
+  overflow-wrap: anywhere;
+  padding: 8px;
+}
+.falling-board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  aspect-ratio: 10/16;
+  max-width: 250px;
+  background: #234b48;
+  padding: 6px;
+  gap: 2px;
+  border: 5px solid #739485;
+  border-radius: 14px;
+  touch-action: none;
+}
+.block-cell {
+  border-radius: 3px;
+  background: #ffffff08;
+  min-width: 0;
+}
+.block-cell.filled {
+  background: hsl(var(--gem) 65% 73%);
+  box-shadow:
+    inset 2px 2px 0 #fff6,
+    inset -2px -2px 0 #0002;
+}
+.arcade-won {
+  animation: arcade-win 0.6s ease;
+}
+@keyframes tile-arrive {
+  from {
+    transform: scale(0.84);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes potion-settle {
+  50% {
+    transform: translateY(5px) rotate(3deg);
+  }
+}
+@keyframes gentle-shake {
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+@keyframes arcade-win {
+  50% {
+    transform: scale(1.025);
+    opacity: 0.8;
+  }
+}
+@media (max-width: 420px) {
+  .game-menu {
+    gap: 9px;
+  }
+  .game-menu .game-card {
+    padding: 14px 12px;
+    min-height: 150px;
+  }
+  .game-card strong {
+    font-size: 15px;
+  }
+  .arcade-arena {
+    padding: 15px 8px;
+  }
+  .potion-bottle {
+    width: 45px;
+    height: 146px;
+  }
+  .potion-rack {
+    gap: 26px 8px;
+  }
+  .number-candies {
+    gap: 7px;
+  }
+  .number-candy {
+    min-height: 51px;
+  }
+  .arcade-action {
+    padding: 9px 11px;
+  }
+  .sudoku-cell {
+    font-size: 21px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arcade-arena *,
+  .game-card {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+#world.paused ~ dialog .arcade-arena *,
+body.inactive .arcade-arena * {
+  animation-play-state: paused !important;
+}
+
+/* Keep the play area readable above the painted scenery on small screens. */
+.customer-order strong {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+#games-dialog:has(.arcade-arena) {
+  padding: 22px 18px;
+}
+#games-dialog:has(.arcade-arena) h2 {
+  font-size: 24px;
+  margin: 10px 0;
+}
+#games-dialog:has(.arcade-arena) .game-clock {
+  margin: 10px 0;
+  padding: 8px;
+}
+#games-dialog:has(.arcade-arena) .game-buddy {
+  height: 64px !important;
+}
+#games-dialog:has(.arcade-arena) .game-buddy .gallery-art {
+  width: 76px !important;
+  height: 76px !important;
+}
+.arcade-kitchen .kitchen-board {
+  padding: 10px;
+}
+.arcade-kitchen .customer-order {
+  padding: 8px;
+}
+.arcade-kitchen .burger-plate {
+  margin: 6px auto;
+  padding: 0;
+}
+.arcade-kitchen .arcade-tools {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 10px 0 0;
+}
+.arcade-kitchen .arcade-tools button {
+  min-width: 0;
+  padding: 6px 4px;
+  font-size: 12px;
+}
+.arcade-kitchen .arcade-tools .food-prop {
+  width: 36px;
+  height: 36px;
+}
+@media (max-width: 420px) {
+  #games-dialog:has(.arcade-arena) {
+    padding: 20px 12px;
+  }
+  .arcade-instruction {
+    margin: 8px auto 12px !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+  }
+  .arcade-arena {
+    padding: 12px 8px;
+  }
+  .falling-board {
+    max-width: 190px;
+  }
+}

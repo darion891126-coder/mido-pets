@@ -1,14 +1,15 @@
 (function (root) {
   const games = {
-    race: "林间赛跑",
-    hide: "花园捉迷藏",
-    disc: "彩虹飞盘",
-    words: "单词寻宝",
-    memory: "魔法翻翻乐",
-    stars: "星星采集",
-    lily: "月光跳荷叶",
-    butterfly: "花谷追蝴蝶",
-    fruit: "果园接果果",
+    water: "彩虹药水坊",
+    puzzle: "森林拼图",
+    sum: "星糖加加乐",
+    sudoku: "精灵数独",
+    merge: "星光 2048",
+    kitchen: "宠物美食屋",
+    mole: "花园躲猫猫",
+    gomoku: "月光五子棋",
+    twentyfour: "魔法 24 点",
+    blocks: "宝石方块",
   };
   function seed(text) {
     let n = 2166136261;
