@@ -113,7 +113,7 @@
             () => $("#pet").classList.remove("settling"),
             reduced.matches ? 20 : 900,
           );
-          const stage = ["baby", "toddler", "juvenile", "grown", "ultimate"][
+          const stage = ["baby", "juvenile", "grown", "ultimate"][
             M.growth(state.completedDates.length).index
           ];
           $("#main-sprite").style.backgroundImage =

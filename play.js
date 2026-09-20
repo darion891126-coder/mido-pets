@@ -1,6 +1,5 @@
 const artSheets = [
   "pets-baby",
-  "pets-toddler",
   "pets-juvenile",
   "pets-grown",
   "pets-ultimate",
@@ -14,7 +13,7 @@ const finalDetails = [
   "太阳徽章 · 冒险披风",
 ];
 function portrait(species, index = 0, framed = false) {
-  const stage = ["baby", "toddler", "juvenile", "grown", "ultimate"][index];
+  const stage = ["baby", "juvenile", "grown", "ultimate"][index];
   const sheet = framed ? "pets-gallery-" + stage : artSheets[index];
   return `<span class="gallery-art ${framed ? "gallery-framed" : ""}" data-species="${species}" data-stage="${index}" style="background-image:url('assets/${sheet}.png');background-position:${M.pets[species].pos}" role="img" aria-label="${safe(M.pets[species].species)}"></span>`;
 }
@@ -24,12 +23,12 @@ function gallery() {
     { id: state.activePetId, pet: state },
   ];
   $("#gallery-content").innerHTML =
-    `<span class="dialog-eyebrow">星光森林 · 伙伴图鉴</span><h2>每一种相遇，都有惊喜</h2><p>看看六位伙伴从幼年到最终形态的变化。</p><div class="gallery-tabs">${M.stages.map((s, i) => `<button data-gallery-stage="${i}" aria-pressed="${i === 0}">${s.day}日 · ${s.title}</button>`).join("")}</div><div id="species-grid" class="species-grid"></div><h3>我的伙伴</h3><p>每位伙伴累计60个成长日后，可邀请一位新伙伴。切换不会丢失进度；当天打卡只让当前伙伴成长，奖励背包共用。</p><div class="owned-list">${owned.map((p) => `<button data-switch-pet="${safe(p.id || "")}" ${p.id === state.activePetId ? "disabled" : ""}>${p.pet.species === null ? "🥚" : M.pets[p.pet.species].species} · ${safe(p.pet.name || "等待取名")} · ${p.pet.completedDates.length}日${p.id === state.activePetId ? "（当前）" : ""}</button>`).join("")}</div><button class="primary" id="another-pet" ${state.phase !== "pet" || state.completedDates.length < 60 || state.adoptionUsed ? "disabled" : ""}>邀请一位新伙伴</button><p id="gallery-note" role="status"></p>`;
+    `<span class="dialog-eyebrow">星光森林 · 伙伴图鉴</span><h2>每一种相遇，都有惊喜</h2><p>看看六位伙伴从幼年到最终形态的变化。</p><div class="gallery-tabs">${M.stages.map((s, i) => `<button data-gallery-stage="${i}" aria-pressed="${i === 0}">${s.day}日 · ${s.title}</button>`).join("")}</div><div id="species-grid" class="species-grid"></div><h3>我的伙伴</h3><p>每位伙伴累计30个成长日后，可邀请一位新伙伴。切换不会丢失进度；当天打卡只让当前伙伴成长，奖励背包共用。</p><div class="owned-list">${owned.map((p) => `<button data-switch-pet="${safe(p.id || "")}" ${p.id === state.activePetId ? "disabled" : ""}>${p.pet.species === null ? "🥚" : M.pets[p.pet.species].species} · ${safe(p.pet.name || "等待取名")} · ${p.pet.completedDates.length}日${p.id === state.activePetId ? "（当前）" : ""}</button>`).join("")}</div><button class="primary" id="another-pet" ${state.phase !== "pet" || state.completedDates.length < 30 || state.adoptionUsed ? "disabled" : ""}>邀请一位新伙伴</button><p id="gallery-note" role="status"></p>`;
   const show = (index) => {
     $("#species-grid").innerHTML = M.pets
       .map(
         (pet, i) =>
-          `<article>${portrait(i, index, true)}<h3>${pet.species}</h3><p>${index === 4 ? finalDetails[i] : pet.trait}</p></article>`,
+          `<article>${portrait(i, index, true)}<h3>${pet.species}</h3><p>${index === 3 ? finalDetails[i] : pet.trait}</p></article>`,
       )
       .join("");
     document

@@ -107,7 +107,6 @@ function sprite(el, days = state.completedDates.length) {
     "url('assets/" +
     [
       "pets-baby",
-      "pets-toddler",
       "pets-juvenile",
       "pets-grown",
       "pets-ultimate",
@@ -116,8 +115,8 @@ function sprite(el, days = state.completedDates.length) {
   el.style.backgroundSize = "300% 200%";
   el.style.backgroundPosition = M.pets[state.species].pos;
   el.style.setProperty("--pet-scale", stage.scale);
-  el.classList.toggle("legendary", stage.index === 4);
-  el.classList.toggle("youth-glow", stage.index === 2);
+  el.classList.toggle("legendary", stage.index === 3);
+  el.classList.toggle("youth-glow", stage.index === 1);
   el.classList.toggle("mature-art", stage.index >= 1);
 }
 function renderArtwork() {
@@ -391,7 +390,7 @@ function renderHome() {
       ? "再 " + g.remaining + " 天，迎来" + g.next.title
       : "我们的魔法，闪闪发光") +
     '</span></div><div class="growth-bar"><i style="transform:scaleX(' +
-    Math.min(days / 60, 1) +
+    Math.min(days / 30, 1) +
     ')"></i></div><button id="daily" class="primary">' +
     dailySummary() +
     ' <span>✧</span></button><div class="home-actions"><button id="bag"><span>🎒</span>背包 · ' +

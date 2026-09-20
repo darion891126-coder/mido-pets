@@ -40,9 +40,9 @@
     s.activePetId = id;
   }
   function adopt(s, id) {
-    if (s.phase !== "pet" || s.completedDates.length < 60 || s.adoptionUsed)
+    if (s.phase !== "pet" || s.completedDates.length < 30 || s.adoptionUsed)
       throw new Error(
-        "这位伙伴养满60个成长日后，可以邀请一位新伙伴。每位伙伴开放一次。",
+        "这位伙伴养满30个成长日后，可以邀请一位新伙伴。每位伙伴开放一次。",
       );
     s.adoptionUsed = true;
     stash(s);
